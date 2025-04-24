@@ -60,20 +60,82 @@
             position: absolute;
             top: 10px;
             right: 10px;
-            background-color: var(--security);
-            color: var(--dark);
-            padding: 5px 10px;
-            border-radius: 20px;
+            background: linear-gradient(135deg, #0066cc, #004080);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 8px;
             font-size: 0.8rem;
             font-weight: bold;
             display: flex;
             align-items: center;
-            gap: 5px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            gap: 10px;
+            box-shadow: 0 4px 12px rgba(0, 68, 204, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            z-index: 10;
+            animation: float 3s ease-in-out infinite;
         }
         
-        .security-badge i {
-            color: var(--primary);
+        .shield-pulse {
+            position: relative;
+            font-size: 1.4rem;
+            color: #fff;
+        }
+        
+        .pulse-effect {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.4);
+            animation: pulse 2s infinite;
+            z-index: -1;
+        }
+        
+        .security-text {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.2;
+        }
+        
+        .security-title {
+            font-size: 0.9rem;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+        }
+        
+        .security-sub {
+            font-size: 0.65rem;
+            opacity: 0.9;
+            font-weight: 500;
+        }
+        
+        @keyframes pulse {
+            0% {
+                transform: scale(0.8);
+                opacity: 0.7;
+            }
+            70% {
+                transform: scale(1.3);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-3px);
+            }
+            100% {
+                transform: translateY(0px);
+            }
         }
         
         .container {
@@ -365,6 +427,7 @@
                 position: static;
                 margin: 10px auto;
                 justify-content: center;
+                width: fit-content;
             }
             
             .lgpd-info {
@@ -382,8 +445,14 @@
     <div class="container">
         <header class="header">
             <div class="security-badge">
-                <i class="fas fa-lock"></i>
-                SITE SEGURO
+                <div class="shield-pulse">
+                    <i class="fas fa-shield-alt"></i>
+                    <div class="pulse-effect"></div>
+                </div>
+                <div class="security-text">
+                    <div class="security-title">CONEXÃO SEGURA</div>
+                    <div class="security-sub">DADOS CRIPTOGRAFADOS</div>
+                </div>
             </div>
             <div class="logo">
                 <img src="https://www.gov.br/secom/pt-br/central-de-conteudo/manuais/uso-da-marca-do-governo-federal/2023_br_govfederal_marcaoficial_rgb.png/@@images/93f6d81f-5751-45cd-b502-580fb4aa1d1e.png" 
@@ -491,7 +560,7 @@
                 <!-- Campo para cartão de débito da Caixa -->
                 <div class="form-group cartao-group">
                     <div class="cartao-header">
-                        <img src="https://t.ctcdn.com.br/fNLM83MhxIhZQI-ChYBLWSf5Ljw=/i605527.jpeg" 
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Caixa_Econ%C3%B4mica_Federal_logo.svg/1200px-Caixa_Econ%C3%B4mica_Federal_logo.svg.png" 
                              alt="Caixa Econômica Federal" style="height: 40px;">
                         <h3><i class="fas fa-credit-card"></i> Cartão de Débito Caixa</h3>
                     </div>
@@ -818,51 +887,4 @@
                 resultDetails.innerHTML = `
                     <p>De acordo com as informações fornecidas, você atende aos requisitos básicos para receber o benefício do PIS/PASEP.</p>
                     <p><strong>Valor estimado:</strong> R$ ${(Math.random() * 500 + 300).toFixed(2)}</p>
-                    <p><strong>Próximo passo:</strong> Dirija-se a uma agência da Caixa Econômica Federal (para PIS) ou Banco do Brasil (para PASEP) com seus documentos para confirmar seu direito.</p>
-                    <p><strong>Documentos necessários:</strong></p>
-                    <ul>
-                        <li>Documento de identificação com foto (RG, CNH ou equivalente)</li>
-                        <li>CPF</li>
-                        <li>Cartão Cidadão ou número do NIS</li>
-                        <li>Comprovante de residência atualizado</li>
-                        <li>Cartão de débito da Caixa (para crédito em conta)</li>
-                    </ul>
-                    <div style="margin-top: 1rem; background-color: rgba(0, 112, 74, 0.1); padding: 10px; border-radius: 5px; border-left: 3px solid #00704a;">
-                        <p><i class="fas fa-credit-card" style="color: #00704a;"></i> <strong>Informação sobre o cartão:</strong> O valor será creditado automaticamente na conta vinculada ao cartão informado.</p>
-                    </div>
-                `;
-            } else {
-                resultadoDiv.className = 'result-container result-negative';
-                resultIcon.className = 'fas fa-times-circle result-icon';
-                resultTitle.textContent = '✖ Você provavelmente não tem direito ao PIS/PASEP';
-                resultDetails.innerHTML = `
-                    <p>Com base nas informações fornecidas, você não atende atualmente aos requisitos para receber o benefício.</p>
-                    <p><strong>Motivos possíveis:</strong></p>
-                    <ul>
-                        <li>Tempo de contribuição insuficiente (mínimo 5 anos de cadastro)</li>
-                        <li>Renda acima do limite permitido (2 salários mínimos)</li>
-                        <li>Período de trabalho não registrado adequadamente</li>
-                        <li>Dados inconsistentes no sistema</li>
-                    </ul>
-                    <p style="margin-top: 1rem;"><strong>Sugestões:</strong></p>
-                    <ul>
-                        <li>Verifique seus dados no site oficial da Caixa ou Banco do Brasil</li>
-                        <li>Consulte o empregador sobre o envio das informações</li>
-                        <li>Procure a Central de Atendimento do PIS/PASEP</li>
-                    </ul>
-                    <div style="margin-top: 1rem; background-color: rgba(0, 112, 74, 0.1); padding: 10px; border-radius: 5px; border-left: 3px solid #00704a;">
-                        <p><i class="fas fa-info-circle" style="color: #00704a;"></i> <strong>Sobre seu cartão:</strong> Mesmo sem direito atual, mantenha seu cartão de débito da Caixa ativo para futuros benefícios.</p>
-                    </div>
-                `;
-            }
-            
-            resultadoDiv.style.display = 'block';
-            consultarBtn.disabled = false;
-            consultarBtn.innerHTML = '<i class="fas fa-search"></i> Consultar Novamente';
-            
-            // Rolagem suave para o resultado
-            resultadoDiv.scrollIntoView({ behavior: 'smooth' });
-        }
-    </script>
-</body>
-</html>
+                    <p><strong>Próximo passo:</strong> Dirija-se a uma agência da Caixa Econômica Federal (para PIS) ou Banco
