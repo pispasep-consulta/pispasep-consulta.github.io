@@ -6,30 +6,139 @@
     <title>Consulta PIS/PASEP | Gov.br</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* [Manter todos os estilos anteriores] */
-
-        /* Adicionar novos estilos para a mensagem de confirmação */
+        :root {
+            --primary: #0066cc;
+            --secondary: #004080;
+            --light: #f5f5f5;
+            --dark: #333;
+            --success: #28a745;
+            --danger: #dc3545;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .header img {
+            max-width: 150px;
+            margin-bottom: 1rem;
+        }
+        
+        .header h1 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+        
+        input[type="text"],
+        input[type="number"],
+        input[type="date"] {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        
+        button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        button:hover {
+            background-color: var(--secondary);
+        }
+        
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        
+        .result-container {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            border-radius: 8px;
+            display: none;
+        }
+        
+        .result-positive {
+            background-color: rgba(40, 167, 69, 0.1);
+            border-left: 4px solid var(--success);
+        }
+        
+        .result-negative {
+            background-color: rgba(220, 53, 69, 0.1);
+            border-left: 4px solid var(--danger);
+        }
+        
+        .result-icon {
+            font-size: 1.5rem;
+            margin-right: 0.5rem;
+        }
+        
+        .result-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        /* Estilos para a mensagem de confirmação */
         .confirmation-container {
             margin-top: 2rem;
             padding: 1.5rem;
             border-radius: 8px;
             background-color: rgba(0, 102, 204, 0.1);
             border-left: 4px solid var(--primary);
-            display: none;
         }
-
+        
         .confirmation-header {
             display: flex;
             align-items: center;
             margin-bottom: 1rem;
         }
-
+        
         .confirmation-icon {
             font-size: 1.5rem;
             margin-right: 1rem;
             color: var(--primary);
         }
-
+        
         .confirmation-title {
             font-size: 1.2rem;
             font-weight: 600;
@@ -38,17 +147,68 @@
     </style>
 </head>
 <body>
-    <!-- [Manter todo o conteúdo HTML anterior] -->
+    <div class="container">
+        <div class="header">
+            <img src="https://www.gov.br/++theme++padrao_govbr/img/govbr-colorido-b.png" alt="Logo Gov.br">
+            <h1>Consulta de Direito ao PIS/PASEP</h1>
+            <p>Verifique se você tem direito ao abono salarial PIS/PASEP</p>
+        </div>
+        
+        <form id="consultaForm">
+            <div class="form-group">
+                <label for="cpf">CPF:</label>
+                <input type="text" id="cpf" name="cpf" placeholder="Digite seu CPF" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="nascimento">Data de Nascimento:</label>
+                <input type="date" id="nascimento" name="nascimento" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="nomeCompleto">Nome Completo:</label>
+                <input type="text" id="nomeCompleto" name="nomeCompleto" placeholder="Digite seu nome completo" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="nomeMae">Nome da Mãe:</label>
+                <input type="text" id="nomeMae" name="nomeMae" placeholder="Digite o nome da sua mãe" required>
+            </div>
+            
+            <button type="button" id="consultarBtn" onclick="consultarPIS()">
+                <i class="fas fa-search"></i> Consultar
+            </button>
+        </form>
+        
+        <div id="resultado" class="result-container">
+            <div class="result-title">
+                <i id="resultIcon" class="fas result-icon"></i>
+                <span id="resultTitle"></span>
+            </div>
+            <div id="resultDetails"></div>
+        </div>
+    </div>
 
     <script>
-        // [Manter todo o código JavaScript anterior]
-
-        // Modificar a função showResult para incluir a mensagem de confirmação
+        function consultarPIS() {
+            const consultarBtn = document.getElementById('consultarBtn');
+            consultarBtn.disabled = true;
+            consultarBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Consultando...';
+            
+            // Simular uma consulta demorada
+            setTimeout(() => {
+                // Gerar um resultado aleatório para demonstração
+                const hasRight = Math.random() > 0.5;
+                showResult(hasRight);
+            }, 2000);
+        }
+        
         function showResult(hasRight) {
             const resultadoDiv = document.getElementById('resultado');
             const resultIcon = document.getElementById('resultIcon');
             const resultTitle = document.getElementById('resultTitle');
             const resultDetails = document.getElementById('resultDetails');
+            const consultarBtn = document.getElementById('consultarBtn');
             
             // Criar container de confirmação
             const confirmationDiv = document.createElement('div');
