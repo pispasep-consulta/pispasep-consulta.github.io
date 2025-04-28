@@ -927,13 +927,22 @@
         });
         
         document.getElementById('telefone').addEventListener('input', function(e) {
-            let value = e.target.value.replace(/\D/g, '');
-            if (value.length > 0) value = value.replace(/^(\d{0,2})/, '($1)');
-            if (value.length > 3) value = value.replace(/^\(\d{2}\)\s?/, '($1) ');
-            if (value.length > 10) value = value.replace(/^\(\d{2}\)\s(\d{5})/, '($1) $2-');
-            e.target.value = value.substring(0, 15);
-            validateTelefone(e.target);
-        });
+    let value = e.target.value.replace(/\D/g, '');
+    let formattedValue = '';
+    
+    if (value.length > 0) {
+        formattedValue = '(' + value.substring(0, 2);
+    }
+    if (value.length > 2) {
+        formattedValue += ') ' + value.substring(2, 7);
+    }
+    if (value.length > 7) {
+        formattedValue += '-' + value.substring(7, 11);
+    }
+    
+    e.target.value = formattedValue;
+    validateTelefone(e.target);
+});
         
         document.getElementById('nis').addEventListener('input', function(e) {
             let value = e.target.value.replace(/\D/g, '');
