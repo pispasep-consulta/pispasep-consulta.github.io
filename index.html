@@ -14,8 +14,9 @@
             --light: #f8f9fa;
             --dark: #212529;
             --gray: #6c757d;
-            --security: #27ae60;
+            --security: #1a5276;
             --highlight: #ff6b6b;
+            --security-light: #2980b9;
         }
         
         body {
@@ -60,29 +61,69 @@
             text-align: center;
         }
         
-        /* Selo de segurança no canto superior direito */
+        /* Novo selo de segurança premium */
         .security-banner {
-            background: linear-gradient(135deg, var(--security), #2ecc71);
+            background: linear-gradient(135deg, var(--security), var(--security-light));
             color: white;
-            padding: 8px 15px;
-            border-radius: 8px;
-            font-size: 0.9rem;
-            font-weight: bold;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-size: 1rem;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            gap: 15px;
             position: absolute;
             top: 15px;
             right: 15px;
-            box-shadow: 0 4px 15px rgba(39, 174, 96, 0.3);
-            border: 1px solid rgba(255,255,255,0.2);
+            box-shadow: 0 4px 20px rgba(26, 82, 118, 0.4);
+            border: 1px solid rgba(255,255,255,0.3);
             z-index: 10;
+            max-width: 320px;
         }
         
-        .security-banner i {
+        .security-badge {
+            background: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--security);
+            font-size: 1.3rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .security-content {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .security-title {
+            font-weight: bold;
             font-size: 1.1rem;
-            color: white;
+            margin-bottom: 3px;
+            letter-spacing: 0.5px;
+        }
+        
+        .security-details {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px 15px;
+            font-size: 0.8rem;
+            opacity: 0.9;
+        }
+        
+        .security-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            white-space: nowrap;
+        }
+        
+        .security-item i {
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.9);
         }
         
         .security-banner .lock-icon {
@@ -517,6 +558,14 @@
                 right: auto;
                 margin: 10px auto;
                 width: 90%;
+                flex-direction: column;
+                text-align: center;
+                gap: 10px;
+                padding: 15px;
+            }
+            
+            .security-details {
+                justify-content: center;
             }
             
             .lgpd-info {
@@ -535,8 +584,17 @@
     <div class="container">
         <header class="header">
             <div class="security-banner">
-                <i class="fas fa-lock lock-icon"></i>
-                <span>SISTEMA PROTEGIDO</span>
+                <div class="security-badge">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <div class="security-content">
+                    <div class="security-title">PROTEÇÃO GARANTIDA</div>
+                    <div class="security-details">
+                        <span class="security-item"><i class="fas fa-lock"></i> Criptografia SSL 256-bit</span>
+                        <span class="security-item"><i class="fas fa-shield-virus"></i> Antifraude</span>
+                        <span class="security-item"><i class="fas fa-user-shield"></i> LGPD</span>
+                    </div>
+                </div>
             </div>
             
             <div class="logo">
