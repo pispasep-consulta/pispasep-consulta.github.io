@@ -153,13 +153,12 @@
       padding: 1.2rem;
       border-radius: 20px;
       box-shadow: 0 0 20px rgba(255,182,193,0.7);
-      animation: pulse 2s infinite;
+      animation: glow 2s infinite alternate;
     }
 
-    @keyframes pulse {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.05); }
-      100% { transform: scale(1); }
+    @keyframes glow {
+      from { box-shadow: 0 0 10px rgba(255, 182, 193, 0.5); }
+      to { box-shadow: 0 0 30px rgba(255, 182, 193, 0.9); }
     }
 
     .footer {
@@ -170,28 +169,6 @@
       position: fixed;
       bottom: 0;
       width: 100%;
-    }
-
-    .petal, .flower {
-      position: absolute;
-      width: 30px;
-      height: 30px;
-      background-size: cover;
-      opacity: 0.8;
-      animation: fall 10s linear infinite;
-    }
-
-    .petal {
-      background-image: url('https://i.imgur.com/zfF5eHE.png');
-    }
-
-    .flower {
-      background-image: url('https://i.imgur.com/GD3iG7Z.png');
-    }
-
-    @keyframes fall {
-      0% { transform: translateY(-100px) rotate(0deg); opacity: 0.9; }
-      100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
     }
 
     @media (max-width: 768px) {
@@ -212,27 +189,36 @@
         font-size: 1.2rem;
       }
     }
+
+    /* Brilhos de fundo */
+    .sparkle {
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      background: #fff;
+      border-radius: 50%;
+      box-shadow: 0 0 6px #fff, 0 0 10px pink;
+      animation: twinkle 2s infinite ease-in-out;
+      z-index: 1;
+    }
+
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.8; transform: scale(1); }
+      50% { opacity: 0.2; transform: scale(1.5); }
+    }
   </style>
 </head>
 <body>
-  <!-- Pétalas e flores animadas -->
+  <!-- Brilhos animados -->
   <script>
-    for (let i = 0; i < 20; i++) {
-      const petal = document.createElement('div');
-      petal.classList.add('petal');
-      petal.style.left = Math.random() * 100 + 'vw';
-      petal.style.animationDuration = (8 + Math.random() * 5) + 's';
-      petal.style.animationDelay = Math.random() * 5 + 's';
-      document.body.appendChild(petal);
-    }
-
-    for (let i = 0; i < 10; i++) {
-      const flower = document.createElement('div');
-      flower.classList.add('flower');
-      flower.style.left = Math.random() * 100 + 'vw';
-      flower.style.animationDuration = (10 + Math.random() * 5) + 's';
-      flower.style.animationDelay = Math.random() * 10 + 's';
-      document.body.appendChild(flower);
+    for (let i = 0; i < 50; i++) {
+      const sparkle = document.createElement('div');
+      sparkle.classList.add('sparkle');
+      sparkle.style.top = Math.random() * 100 + 'vh';
+      sparkle.style.left = Math.random() * 100 + 'vw';
+      sparkle.style.animationDuration = (2 + Math.random() * 2) + 's';
+      sparkle.style.animationDelay = Math.random() * 3 + 's';
+      document.body.appendChild(sparkle);
     }
   </script>
 
@@ -262,7 +248,7 @@
       <h2>Resultado Final</h2>
       <div class="result-circle" id="final-score">0/10</div>
       <p id="result-message">Analisando sua pontuação...</p>
-      <div class="voucher">🎉 Parabéns, você ganhou um voucher de <strong>R$ 2.000</strong>! 🎉</div>
+      <div class="voucher">🎉 Parabéns, Maame! Você ganhou um voucher no valor de <strong>R$ 2.000,00</strong> para gastar onde quiser. 🎉</div>
       <button class="btn" id="restart-btn">Recomeçar</button>
     </div>
   </main>
