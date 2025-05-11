@@ -143,6 +143,25 @@
       box-shadow: 0 0 20px rgba(255, 182, 193, 0.5);
     }
 
+    .voucher {
+      text-align: center;
+      background: linear-gradient(90deg, #ffb6c1, #ffc0cb);
+      color: #fff;
+      font-size: 1.6rem;
+      font-weight: bold;
+      margin: 2rem 0;
+      padding: 1.2rem;
+      border-radius: 20px;
+      box-shadow: 0 0 20px rgba(255,182,193,0.7);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+
     .footer {
       text-align: center;
       padding: 1.2rem;
@@ -153,26 +172,26 @@
       width: 100%;
     }
 
-    /* Rosas voando (animação simples de pétalas) */
-    .petal {
+    .petal, .flower {
       position: absolute;
       width: 30px;
       height: 30px;
-      background-image: url('https://i.imgur.com/zfF5eHE.png'); /* pétala rosa */
       background-size: cover;
+      opacity: 0.8;
       animation: fall 10s linear infinite;
-      opacity: 0.7;
+    }
+
+    .petal {
+      background-image: url('https://i.imgur.com/zfF5eHE.png');
+    }
+
+    .flower {
+      background-image: url('https://i.imgur.com/GD3iG7Z.png');
     }
 
     @keyframes fall {
-      0% {
-        transform: translateY(-100px) rotate(0deg);
-        opacity: 0.8;
-      }
-      100% {
-        transform: translateY(100vh) rotate(360deg);
-        opacity: 0;
-      }
+      0% { transform: translateY(-100px) rotate(0deg); opacity: 0.9; }
+      100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
     }
 
     @media (max-width: 768px) {
@@ -188,11 +207,15 @@
       #question-text {
         font-size: 1.1rem;
       }
+
+      .voucher {
+        font-size: 1.2rem;
+      }
     }
   </style>
 </head>
 <body>
-  <!-- Pétalas animadas -->
+  <!-- Pétalas e flores animadas -->
   <script>
     for (let i = 0; i < 20; i++) {
       const petal = document.createElement('div');
@@ -201,6 +224,15 @@
       petal.style.animationDuration = (8 + Math.random() * 5) + 's';
       petal.style.animationDelay = Math.random() * 5 + 's';
       document.body.appendChild(petal);
+    }
+
+    for (let i = 0; i < 10; i++) {
+      const flower = document.createElement('div');
+      flower.classList.add('flower');
+      flower.style.left = Math.random() * 100 + 'vw';
+      flower.style.animationDuration = (10 + Math.random() * 5) + 's';
+      flower.style.animationDelay = Math.random() * 10 + 's';
+      document.body.appendChild(flower);
     }
   </script>
 
@@ -230,6 +262,7 @@
       <h2>Resultado Final</h2>
       <div class="result-circle" id="final-score">0/10</div>
       <p id="result-message">Analisando sua pontuação...</p>
+      <div class="voucher">🎉 Parabéns, você ganhou um voucher de <strong>R$ 2.000</strong>! 🎉</div>
       <button class="btn" id="restart-btn">Recomeçar</button>
     </div>
   </main>
@@ -240,56 +273,16 @@
 
   <script>
     const questions = [
-      {
-        question: "Qual o nome da matriarca da família Sales?",
-        options: ["Maria", "Ana", "Joana", "Carla"],
-        answer: 0
-      },
-      {
-        question: "Quantos filhos a matriarca da família Sales teve?",
-        options: ["3", "5", "7", "10"],
-        answer: 1
-      },
-      {
-        question: "Qual é o prato especial que a vovó Sales sempre fazia nos domingos?",
-        options: ["Lasanha", "Feijoada", "Bolo de chocolate", "Frango assado"],
-        answer: 3
-      },
-      {
-        question: "Qual era a profissão da primeira mulher da família a se formar?",
-        options: ["Médica", "Professora", "Engenheira", "Advogada"],
-        answer: 1
-      },
-      {
-        question: "Qual tradição familiar foi criada pelas mamães Sales?",
-        options: ["Noite do pijama", "Almoço de domingo", "Festa das avós", "Dia das receitas"],
-        answer: 0
-      },
-      {
-        question: "O valor mais importante para as mamães Sales?",
-        options: ["União familiar", "Sucesso profissional", "Viagens", "Bens materiais"],
-        answer: 0
-      },
-      {
-        question: "Qual era o apelido das avós?",
-        options: ["Vovó doce", "Mamãe grande", "Rainha mãe", "Tia velha"],
-        answer: 2
-      },
-      {
-        question: "Jogo preferido das crianças com as mamães?",
-        options: ["Bingo", "Dominó", "Uno", "Quebra-cabeça"],
-        answer: 1
-      },
-      {
-        question: "Frase mais dita pelas mamães Sales?",
-        options: ["Família é tudo!", "Dinheiro traz felicidade", "Cada um por si", "A vida é curta demais"],
-        answer: 0
-      },
-      {
-        question: "Segredo da felicidade segundo elas?",
-        options: ["Amor incondicional", "Muito dinheiro", "Viagens", "Trabalhar muito"],
-        answer: 0
-      }
+      { question: "Qual o nome da matriarca da família Sales?", options: ["Maria", "Ana", "Joana", "Carla"], answer: 0 },
+      { question: "Quantos filhos a matriarca da família Sales teve?", options: ["3", "5", "7", "10"], answer: 1 },
+      { question: "Qual é o prato especial que a vovó Sales sempre fazia nos domingos?", options: ["Lasanha", "Feijoada", "Bolo de chocolate", "Frango assado"], answer: 3 },
+      { question: "Qual era a profissão da primeira mulher da família a se formar?", options: ["Médica", "Professora", "Engenheira", "Advogada"], answer: 1 },
+      { question: "Qual tradição familiar foi criada pelas mamães Sales?", options: ["Noite do pijama", "Almoço de domingo", "Festa das avós", "Dia das receitas"], answer: 0 },
+      { question: "O valor mais importante para as mamães Sales?", options: ["União familiar", "Sucesso profissional", "Viagens", "Bens materiais"], answer: 0 },
+      { question: "Qual era o apelido das avós?", options: ["Vovó doce", "Mamãe grande", "Rainha mãe", "Tia velha"], answer: 2 },
+      { question: "Jogo preferido das crianças com as mamães?", options: ["Bingo", "Dominó", "Uno", "Quebra-cabeça"], answer: 1 },
+      { question: "Frase mais dita pelas mamães Sales?", options: ["Família é tudo!", "Dinheiro traz felicidade", "Cada um por si", "A vida é curta demais"], answer: 0 },
+      { question: "Segredo da felicidade segundo elas?", options: ["Amor incondicional", "Muito dinheiro", "Viagens", "Trabalhar muito"], answer: 0 }
     ];
 
     let currentQuestion = 0;
