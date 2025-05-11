@@ -1,450 +1,353 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quiz das Mamães da Família Sales | Teste Seu Conhecimento</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary-color: #8e44ad;
-            --secondary-color: #e84393;
-            --accent-color: #fd79a8;
-            --light-color: #f8f1f8;
-            --dark-color: #341f47;
-            --correct-color: #2ecc71;
-            --wrong-color: #e74c3c;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Quiz das Mamães da Família Sales - 2025</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #5c27fe;
+      --secondary: #12c2e9;
+      --background: #0f0f1b;
+      --text: #e0e0e0;
+      --card: #1b1b2f;
+      --success: #00ffab;
+      --error: #ff4b5c;
+    }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-        body {
-            font-family: 'Montserrat', sans-serif;
-            line-height: 1.6;
-            color: var(--dark-color);
-            background-color: var(--light-color);
-            min-height: 100vh;
-            padding-bottom: 60px;
-        }
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: var(--background);
+      color: var(--text);
+      min-height: 100vh;
+      padding-bottom: 60px;
+      background: linear-gradient(160deg, #0f0f1b, #1a1a2e);
+    }
 
-        .header {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            color: white;
-            padding: 2rem 1rem;
-            text-align: center;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
+    header {
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      text-align: center;
+      padding: 2rem 1rem;
+      color: #fff;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
 
-        .header h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: 2.2rem;
-            margin-bottom: 0.5rem;
-        }
+    header h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 2.4rem;
+      margin-bottom: 0.5rem;
+    }
 
-        .header p {
-            font-size: 1.1rem;
-            opacity: 0.9;
-        }
+    .quiz-container {
+      max-width: 800px;
+      margin: 2rem auto;
+      background: var(--card);
+      padding: 2rem;
+      border-radius: 15px;
+      box-shadow: 0 0 20px rgba(92, 39, 254, 0.2);
+    }
 
-        .quiz-container {
-            max-width: 800px;
-            margin: 2rem auto;
-            padding: 2rem;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
+    .quiz-screen {
+      display: none;
+    }
 
-        .quiz-screen {
-            display: none;
-        }
+    .quiz-screen.active {
+      display: block;
+    }
 
-        .quiz-screen.active {
-            display: block;
-        }
+    h2 {
+      font-family: 'Orbitron', sans-serif;
+      color: var(--secondary);
+      margin-bottom: 1rem;
+    }
 
-        .quiz-header {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 1.5rem;
-            font-weight: 600;
-        }
+    .question-counter, .score {
+      font-weight: bold;
+      font-size: 1rem;
+    }
 
-        .question-container {
-            margin-bottom: 2rem;
-        }
+    #question-text {
+      font-size: 1.4rem;
+      margin: 1.5rem 0;
+      color: var(--text);
+    }
 
-        #question-text {
-            font-size: 1.4rem;
-            margin-bottom: 1.5rem;
-            color: var(--dark-color);
-        }
+    .options-container {
+      display: grid;
+      gap: 1rem;
+    }
 
-        .options-container {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 1rem;
-        }
+    .option-btn {
+      padding: 1rem;
+      border-radius: 10px;
+      background: #262637;
+      border: 2px solid transparent;
+      color: var(--text);
+      font-size: 1rem;
+      cursor: pointer;
+      transition: 0.3s;
+    }
 
-        .option-btn {
-            padding: 1rem;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            background: white;
-            cursor: pointer;
-            text-align: left;
-            transition: all 0.3s;
-            font-size: 1rem;
-        }
+    .option-btn:hover {
+      background-color: #343452;
+      border-color: var(--secondary);
+    }
 
-        .option-btn:hover {
-            border-color: var(--secondary-color);
-            transform: translateY(-2px);
-        }
+    .option-btn.correct {
+      background-color: var(--success);
+      color: #000;
+      border-color: var(--success);
+    }
 
-        .option-btn.correct {
-            background-color: var(--correct-color);
-            color: white;
-            border-color: var(--correct-color);
-        }
+    .option-btn.wrong {
+      background-color: var(--error);
+      color: #fff;
+      border-color: var(--error);
+    }
 
-        .option-btn.wrong {
-            background-color: var(--wrong-color);
-            color: white;
-            border-color: var(--wrong-color);
-        }
+    .btn {
+      background: var(--primary);
+      color: white;
+      padding: 0.8rem 1.5rem;
+      border: none;
+      border-radius: 30px;
+      font-weight: bold;
+      font-size: 1rem;
+      cursor: pointer;
+      margin-top: 1.5rem;
+      transition: all 0.3s;
+    }
 
-        .btn {
-            display: inline-block;
-            padding: 0.8rem 1.5rem;
-            background: var(--secondary-color);
-            color: white;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            font-size: 1rem;
-            font-weight: 600;
-            transition: all 0.3s;
-            margin-top: 1rem;
-        }
+    .btn:hover {
+      background: var(--secondary);
+    }
 
-        .btn:hover {
-            background: var(--primary-color);
-            transform: translateY(-2px);
-            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
-        }
+    .result-circle {
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      margin: 2rem auto;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 2.5rem;
+      font-family: 'Orbitron', sans-serif;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+    }
 
-        .btn:disabled {
-            background: #ccc;
-            cursor: not-allowed;
-            transform: none;
-        }
+    .footer {
+      text-align: center;
+      padding: 1.2rem;
+      background: #1f1f2e;
+      color: #aaa;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+    }
 
-        .result-circle {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            color: white;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            margin: 2rem auto;
-            font-size: 2.5rem;
-            font-weight: bold;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        }
+    @media (max-width: 768px) {
+      .quiz-container {
+        margin: 1rem;
+        padding: 1.5rem;
+      }
 
-        .result-circle span {
-            font-size: 3.5rem;
-        }
+      header h1 {
+        font-size: 1.6rem;
+      }
 
-        #result-message {
-            text-align: center;
-            font-size: 1.2rem;
-            margin-bottom: 2rem;
-        }
-
-        .share-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-            flex-wrap: wrap;
-        }
-
-        .share-btn {
-            background: var(--primary-color);
-            padding: 0.6rem 1.2rem;
-            font-size: 0.9rem;
-        }
-
-        .footer {
-            text-align: center;
-            padding: 1.5rem;
-            background: var(--dark-color);
-            color: white;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-        }
-
-        @media (max-width: 768px) {
-            .quiz-container {
-                margin: 1rem;
-                padding: 1.5rem;
-            }
-            
-            .header h1 {
-                font-size: 1.8rem;
-            }
-            
-            #question-text {
-                font-size: 1.2rem;
-            }
-        }
-    </style>
+      #question-text {
+        font-size: 1.1rem;
+      }
+    }
+  </style>
 </head>
 <body>
-    <header class="header">
-        <h1>Quiz das Mamães da Família Sales</h1>
-        <p>Um desafio especial para celebrar as rainhas da nossa família!</p>
-    </header>
+  <header>
+    <h1>Quiz das Mamães da Família Sales</h1>
+    <p>Desafio especial de 2025: Quanto você conhece essas mulheres incríveis?</p>
+  </header>
 
-    <main class="quiz-container">
-        <div id="start-screen" class="quiz-screen active">
-            <h2>Bem-vindo ao Quiz Especial!</h2>
-            <p>Este quiz contém 10 perguntas sobre as mamães incríveis da Família Sales. Mostre o quanto você conhece essas mulheres especiais!</p>
-            <button id="start-btn" class="btn">Começar Quiz</button>
-        </div>
+  <main class="quiz-container">
+    <div id="start-screen" class="quiz-screen active">
+      <h2>Bem-vindo!</h2>
+      <p>Teste seus conhecimentos sobre as mamães da Família Sales com 10 perguntas especiais.</p>
+      <button class="btn" id="start-btn">Começar</button>
+    </div>
 
-        <div id="quiz-screen" class="quiz-screen">
-            <div class="quiz-header">
-                <span class="question-counter">Pergunta 1/10</span>
-                <span class="score">Pontuação: 0</span>
-            </div>
-            <div class="question-container">
-                <h2 id="question-text">Carregando pergunta...</h2>
-                <div id="options-container" class="options-container">
-                    <!-- Opções serão inseridas aqui via JavaScript -->
-                </div>
-            </div>
-            <button id="next-btn" class="btn" disabled>Próxima</button>
-        </div>
+    <div id="quiz-screen" class="quiz-screen">
+      <div class="quiz-header">
+        <span class="question-counter">Pergunta 1/10</span>
+        <span class="score">Pontuação: 0</span>
+      </div>
+      <h2 id="question-text">Carregando pergunta...</h2>
+      <div id="options-container" class="options-container"></div>
+      <button class="btn" id="next-btn" disabled>Próxima</button>
+    </div>
 
-        <div id="results-screen" class="quiz-screen">
-            <h2>Resultado Final</h2>
-            <div class="result-circle">
-                <span id="final-score">0</span>/10
-            </div>
-            <p id="result-message">Mensagem personalizada</p>
-            <div class="share-buttons">
-                <button class="btn share-btn" id="share-wa">Compartilhar no WhatsApp</button>
-                <button class="btn share-btn" id="share-fb">Compartilhar no Facebook</button>
-            </div>
-            <button id="restart-btn" class="btn">Fazer Novamente</button>
-        </div>
-    </main>
+    <div id="results-screen" class="quiz-screen">
+      <h2>Resultado Final</h2>
+      <div class="result-circle" id="final-score">0/10</div>
+      <p id="result-message">Analisando sua pontuação...</p>
+      <button class="btn" id="restart-btn">Recomeçar</button>
+    </div>
+  </main>
 
-    <footer class="footer">
-        <p>© 2024 Quiz das Mamães da Família Sales | Criado com ❤️ para as mamães especiais</p>
-    </footer>
+  <footer class="footer">
+    © 2025 Família Sales - Criado com amor por Ryan
+  </footer>
 
-    <script>
-        // Configuração do quiz
-        const questions = [
-            {
-                question: "Qual o nome da matriarca da família Sales?",
-                options: ["Maria", "Ana", "Joana", "Carla"],
-                answer: 0
-            },
-            {
-                question: "Quantos filhos a matriarca da família Sales teve?",
-                options: ["3", "5", "7", "10"],
-                answer: 1
-            },
-            {
-                question: "Qual é o prato especial que a vovó Sales sempre fazia nos domingos?",
-                options: ["Lasanha", "Feijoada", "Bolo de chocolate", "Frango assado"],
-                answer: 3
-            },
-            {
-                question: "Qual era a profissão da primeira mulher da família Sales a se formar na faculdade?",
-                options: ["Médica", "Professora", "Engenheira", "Advogada"],
-                answer: 1
-            },
-            {
-                question: "Qual o nome da tradição familiar criada pelas mamães Sales?",
-                options: ["Noite do pijama", "Almoço de domingo", "Festa das avós", "Dia das receitas"],
-                answer: 0
-            },
-            {
-                question: "Qual desses valores é mais importante para as mamães Sales?",
-                options: ["União familiar", "Sucesso profissional", "Viagens", "Bens materiais"],
-                answer: 0
-            },
-            {
-                question: "Qual era o apelido carinhoso dado às avós da família?",
-                options: ["Vovó doce", "Mamãe grande", "Rainha mãe", "Tia velha"],
-                answer: 2
-            },
-            {
-                question: "Qual era o jogo preferido para brincar com as crianças?",
-                options: ["Bingo", "Dominó", "Uno", "Quebra-cabeça"],
-                answer: 1
-            },
-            {
-                question: "Qual dessas frases era mais dita pelas mamães Sales?",
-                options: ["Família é tudo!", "Dinheiro traz felicidade", "Cada um por si", "A vida é curta demais"],
-                answer: 0
-            },
-            {
-                question: "Qual era o segredo da felicidade segundo as mamães Sales?",
-                options: ["Amor incondicional", "Muito dinheiro", "Viagens constantes", "Trabalhar muito"],
-                answer: 0
-            }
-        ];
+  <script>
+    const questions = [
+      {
+        question: "Qual o nome da matriarca da família Sales?",
+        options: ["Maria", "Ana", "Joana", "Carla"],
+        answer: 0
+      },
+      {
+        question: "Quantos filhos a matriarca da família Sales teve?",
+        options: ["3", "5", "7", "10"],
+        answer: 1
+      },
+      {
+        question: "Qual é o prato especial que a vovó Sales sempre fazia nos domingos?",
+        options: ["Lasanha", "Feijoada", "Bolo de chocolate", "Frango assado"],
+        answer: 3
+      },
+      {
+        question: "Qual era a profissão da primeira mulher da família a se formar?",
+        options: ["Médica", "Professora", "Engenheira", "Advogada"],
+        answer: 1
+      },
+      {
+        question: "Qual tradição familiar foi criada pelas mamães Sales?",
+        options: ["Noite do pijama", "Almoço de domingo", "Festa das avós", "Dia das receitas"],
+        answer: 0
+      },
+      {
+        question: "O valor mais importante para as mamães Sales?",
+        options: ["União familiar", "Sucesso profissional", "Viagens", "Bens materiais"],
+        answer: 0
+      },
+      {
+        question: "Qual era o apelido das avós?",
+        options: ["Vovó doce", "Mamãe grande", "Rainha mãe", "Tia velha"],
+        answer: 2
+      },
+      {
+        question: "Jogo preferido das crianças com as mamães?",
+        options: ["Bingo", "Dominó", "Uno", "Quebra-cabeça"],
+        answer: 1
+      },
+      {
+        question: "Frase mais dita pelas mamães Sales?",
+        options: ["Família é tudo!", "Dinheiro traz felicidade", "Cada um por si", "A vida é curta demais"],
+        answer: 0
+      },
+      {
+        question: "Segredo da felicidade segundo elas?",
+        options: ["Amor incondicional", "Muito dinheiro", "Viagens", "Trabalhar muito"],
+        answer: 0
+      }
+    ];
 
-        // Variáveis do quiz
-        let currentQuestion = 0;
-        let score = 0;
-        let quizStarted = false;
+    let currentQuestion = 0;
+    let score = 0;
 
-        // Elementos DOM
-        const startScreen = document.getElementById('start-screen');
-        const quizScreen = document.getElementById('quiz-screen');
-        const resultsScreen = document.getElementById('results-screen');
-        const startBtn = document.getElementById('start-btn');
-        const nextBtn = document.getElementById('next-btn');
-        const restartBtn = document.getElementById('restart-btn');
-        const questionText = document.getElementById('question-text');
-        const optionsContainer = document.getElementById('options-container');
-        const questionCounter = document.querySelector('.question-counter');
-        const scoreElement = document.querySelector('.score');
-        const finalScore = document.getElementById('final-score');
-        const resultMessage = document.getElementById('result-message');
-        const shareWaBtn = document.getElementById('share-wa');
-        const shareFbBtn = document.getElementById('share-fb');
+    const startBtn = document.getElementById('start-btn');
+    const nextBtn = document.getElementById('next-btn');
+    const restartBtn = document.getElementById('restart-btn');
+    const questionText = document.getElementById('question-text');
+    const optionsContainer = document.getElementById('options-container');
+    const questionCounter = document.querySelector('.question-counter');
+    const scoreElement = document.querySelector('.score');
+    const finalScore = document.getElementById('final-score');
+    const resultMessage = document.getElementById('result-message');
+    const startScreen = document.getElementById('start-screen');
+    const quizScreen = document.getElementById('quiz-screen');
+    const resultsScreen = document.getElementById('results-screen');
 
-        // Iniciar quiz
-        startBtn.addEventListener('click', startQuiz);
-        nextBtn.addEventListener('click', nextQuestion);
-        restartBtn.addEventListener('click', restartQuiz);
+    startBtn.addEventListener('click', () => {
+      startScreen.classList.remove('active');
+      quizScreen.classList.add('active');
+      showQuestion();
+    });
 
-        // Função para iniciar o quiz
-        function startQuiz() {
-            quizStarted = true;
-            startScreen.classList.remove('active');
-            quizScreen.classList.add('active');
-            showQuestion();
-        }
+    nextBtn.addEventListener('click', () => {
+      currentQuestion++;
+      if (currentQuestion < questions.length) {
+        showQuestion();
+      } else {
+        showResults();
+      }
+    });
 
-        // Mostrar pergunta atual
-        function showQuestion() {
-            const question = questions[currentQuestion];
-            questionText.textContent = question.question;
-            optionsContainer.innerHTML = '';
-            
-            // Atualizar contador
-            questionCounter.textContent = `Pergunta ${currentQuestion + 1}/${questions.length}`;
-            scoreElement.textContent = `Pontuação: ${score}`;
-            
-            // Criar botões de opção
-            question.options.forEach((option, index) => {
-                const button = document.createElement('button');
-                button.textContent = option;
-                button.classList.add('option-btn');
-                button.addEventListener('click', () => selectAnswer(index));
-                optionsContainer.appendChild(button);
-            });
-            
-            // Desabilitar próximo botão até responder
-            nextBtn.disabled = true;
-        }
+    restartBtn.addEventListener('click', () => {
+      currentQuestion = 0;
+      score = 0;
+      resultsScreen.classList.remove('active');
+      startScreen.classList.add('active');
+    });
 
-        // Selecionar resposta
-        function selectAnswer(index) {
-            const question = questions[currentQuestion];
-            const options = document.querySelectorAll('.option-btn');
-            
-            // Desabilitar todas as opções após seleção
-            options.forEach(option => {
-                option.disabled = true;
-            });
-            
-            // Marcar resposta correta/incorreta
-            if (index === question.answer) {
-                options[index].classList.add('correct');
-                score++;
-                scoreElement.textContent = `Pontuação: ${score}`;
-            } else {
-                options[index].classList.add('wrong');
-                options[question.answer].classList.add('correct');
-            }
-            
-            // Habilitar próximo botão
-            nextBtn.disabled = false;
-        }
+    function showQuestion() {
+      const question = questions[currentQuestion];
+      questionText.textContent = question.question;
+      questionCounter.textContent = `Pergunta ${currentQuestion + 1}/${questions.length}`;
+      scoreElement.textContent = `Pontuação: ${score}`;
+      optionsContainer.innerHTML = '';
+      nextBtn.disabled = true;
 
-        // Próxima pergunta
-        function nextQuestion() {
-            currentQuestion++;
-            
-            if (currentQuestion < questions.length) {
-                showQuestion();
-            } else {
-                showResults();
-            }
-        }
+      question.options.forEach((option, index) => {
+        const btn = document.createElement('button');
+        btn.textContent = option;
+        btn.classList.add('option-btn');
+        btn.onclick = () => selectAnswer(index);
+        optionsContainer.appendChild(btn);
+      });
+    }
 
-        // Mostrar resultados
-        function showResults() {
-            quizScreen.classList.remove('active');
-            resultsScreen.classList.add('active');
-            
-            finalScore.textContent = score;
-            
-            // Mensagem personalizada baseada na pontuação
-            let message;
-            if (score === questions.length) {
-                message = "Incrível! Você conhece as mamães Sales melhor do que ninguém!";
-            } else if (score >= questions.length * 0.7) {
-                message = "Muito bom! Você realmente conhece bem as mamães da família!";
-            } else if (score >= questions.length * 0.4) {
-                message = "Bom trabalho! Mas ainda pode conhecer mais sobre essas mulheres incríveis!";
-            } else {
-                message = "Hmm... parece que você precisa passar mais tempo com as mamães Sales!";
-            }
-            
-            resultMessage.textContent = message;
-            
-            // Configurar compartilhamento
-            const shareText = `Eu fiz ${score} pontos no Quiz das Mamães da Família Sales! Tente bater minha pontuação!`;
-            const shareUrl = window.location.href;
-            
-            shareWaBtn.addEventListener('click', () => {
-                window.open(`https://wa.me/?text=${encodeURIComponent(shareText + ' ' + shareUrl)}`, '_blank');
-            });
-            
-            shareFbBtn.addEventListener('click', () => {
-                window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}&quote=${encodeURIComponent(shareText)}`, '_blank');
-            });
-        }
+    function selectAnswer(index) {
+      const question = questions[currentQuestion];
+      const buttons = document.querySelectorAll('.option-btn');
+      buttons.forEach(btn => btn.disabled = true);
 
-        // Reiniciar quiz
-        function restartQuiz() {
-            currentQuestion = 0;
-            score = 0;
-            quizStarted = false;
-            
-            resultsScreen.classList.remove('active');
-            startScreen.classList.add('active');
-        }
-    </script>
+      if (index === question.answer) {
+        buttons[index].classList.add('correct');
+        score++;
+      } else {
+        buttons[index].classList.add('wrong');
+        buttons[question.answer].classList.add('correct');
+      }
+
+      nextBtn.disabled = false;
+      scoreElement.textContent = `Pontuação: ${score}`;
+    }
+
+    function showResults() {
+      quizScreen.classList.remove('active');
+      resultsScreen.classList.add('active');
+      finalScore.textContent = `${score}/10`;
+
+      if (score === 10) {
+        resultMessage.textContent = "Uau! Você é expert nas mamães da Família Sales!";
+      } else if (score >= 7) {
+        resultMessage.textContent = "Ótimo! Você conhece muito bem essas mulheres incríveis.";
+      } else if (score >= 4) {
+        resultMessage.textContent = "Bom! Mas dá pra melhorar. Bora rever as histórias!";
+      } else {
+        resultMessage.textContent = "Hora de se reconectar com as mamães! Você consegue melhor.";
+      }
+    }
+  </script>
 </body>
 </html>
+
+            
