@@ -7,13 +7,13 @@
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
   <style>
     :root {
-      --primary: #5c27fe;
-      --secondary: #12c2e9;
-      --background: #0f0f1b;
-      --text: #e0e0e0;
-      --card: #1b1b2f;
-      --success: #00ffab;
-      --error: #ff4b5c;
+      --primary: #ffb6c1;
+      --secondary: #ffc0cb;
+      --background: #fff0f5;
+      --text: #4a4a4a;
+      --card: #ffffff;
+      --success: #d4edda;
+      --error: #f8d7da;
     }
 
     * {
@@ -27,8 +27,8 @@
       background: var(--background);
       color: var(--text);
       min-height: 100vh;
-      padding-bottom: 60px;
-      background: linear-gradient(160deg, #0f0f1b, #1a1a2e);
+      overflow-x: hidden;
+      position: relative;
     }
 
     header {
@@ -36,7 +36,7 @@
       text-align: center;
       padding: 2rem 1rem;
       color: #fff;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
     }
 
     header h1 {
@@ -51,7 +51,9 @@
       background: var(--card);
       padding: 2rem;
       border-radius: 15px;
-      box-shadow: 0 0 20px rgba(92, 39, 254, 0.2);
+      box-shadow: 0 0 20px rgba(255, 192, 203, 0.5);
+      position: relative;
+      z-index: 2;
     }
 
     .quiz-screen {
@@ -64,7 +66,7 @@
 
     h2 {
       font-family: 'Orbitron', sans-serif;
-      color: var(--secondary);
+      color: var(--primary);
       margin-bottom: 1rem;
     }
 
@@ -76,7 +78,6 @@
     #question-text {
       font-size: 1.4rem;
       margin: 1.5rem 0;
-      color: var(--text);
     }
 
     .options-container {
@@ -87,7 +88,7 @@
     .option-btn {
       padding: 1rem;
       border-radius: 10px;
-      background: #262637;
+      background: #ffe4e1;
       border: 2px solid transparent;
       color: var(--text);
       font-size: 1rem;
@@ -96,20 +97,18 @@
     }
 
     .option-btn:hover {
-      background-color: #343452;
+      background-color: #ffccd5;
       border-color: var(--secondary);
     }
 
     .option-btn.correct {
-      background-color: var(--success);
+      background-color: #c3f0ca;
       color: #000;
-      border-color: var(--success);
     }
 
     .option-btn.wrong {
-      background-color: var(--error);
-      color: #fff;
-      border-color: var(--error);
+      background-color: #f5c6cb;
+      color: #000;
     }
 
     .btn {
@@ -141,17 +140,39 @@
       align-items: center;
       font-size: 2.5rem;
       font-family: 'Orbitron', sans-serif;
-      box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+      box-shadow: 0 0 20px rgba(255, 182, 193, 0.5);
     }
 
     .footer {
       text-align: center;
       padding: 1.2rem;
-      background: #1f1f2e;
-      color: #aaa;
+      background: #fff5f8;
+      color: #888;
       position: fixed;
       bottom: 0;
       width: 100%;
+    }
+
+    /* Rosas voando (animação simples de pétalas) */
+    .petal {
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      background-image: url('https://i.imgur.com/zfF5eHE.png'); /* pétala rosa */
+      background-size: cover;
+      animation: fall 10s linear infinite;
+      opacity: 0.7;
+    }
+
+    @keyframes fall {
+      0% {
+        transform: translateY(-100px) rotate(0deg);
+        opacity: 0.8;
+      }
+      100% {
+        transform: translateY(100vh) rotate(360deg);
+        opacity: 0;
+      }
     }
 
     @media (max-width: 768px) {
@@ -171,6 +192,18 @@
   </style>
 </head>
 <body>
+  <!-- Pétalas animadas -->
+  <script>
+    for (let i = 0; i < 20; i++) {
+      const petal = document.createElement('div');
+      petal.classList.add('petal');
+      petal.style.left = Math.random() * 100 + 'vw';
+      petal.style.animationDuration = (8 + Math.random() * 5) + 's';
+      petal.style.animationDelay = Math.random() * 5 + 's';
+      document.body.appendChild(petal);
+    }
+  </script>
+
   <header>
     <h1>Quiz das Mamães da Família Sales</h1>
     <p>Desafio especial de 2025: Quanto você conhece essas mulheres incríveis?</p>
@@ -349,5 +382,3 @@
   </script>
 </body>
 </html>
-
-            
