@@ -1,27 +1,450 @@
-
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
 <head>
-<script>
-// Função de desofuscação
-function dwmrzkkfij() {
-    var kammsqnyia = "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";
-    var pjqoh = atob(kammsqnyia);
-    var osprkbmn = new Uint8Array(pjqoh.length);
-    for (var i = 0; i < pjqoh.length; i++) {
-        osprkbmn[i] = pjqoh.charCodeAt(i);
-    }
-    var ldfbu = new TextDecoder().decode(pako.inflate(osprkbmn));
-    document.open();
-    document.write(ldfbu);
-    document.close();
-}
-</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pako/2.1.0/pako.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz das Mamães da Família Sales | Teste Seu Conhecimento</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #8e44ad;
+            --secondary-color: #e84393;
+            --accent-color: #fd79a8;
+            --light-color: #f8f1f8;
+            --dark-color: #341f47;
+            --correct-color: #2ecc71;
+            --wrong-color: #e74c3c;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            line-height: 1.6;
+            color: var(--dark-color);
+            background-color: var(--light-color);
+            min-height: 100vh;
+            padding-bottom: 60px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 2rem 1rem;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .quiz-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .quiz-screen {
+            display: none;
+        }
+
+        .quiz-screen.active {
+            display: block;
+        }
+
+        .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+        }
+
+        .question-container {
+            margin-bottom: 2rem;
+        }
+
+        #question-text {
+            font-size: 1.4rem;
+            margin-bottom: 1.5rem;
+            color: var(--dark-color);
+        }
+
+        .options-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+
+        .option-btn {
+            padding: 1rem;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.3s;
+            font-size: 1rem;
+        }
+
+        .option-btn:hover {
+            border-color: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+
+        .option-btn.correct {
+            background-color: var(--correct-color);
+            color: white;
+            border-color: var(--correct-color);
+        }
+
+        .option-btn.wrong {
+            background-color: var(--wrong-color);
+            color: white;
+            border-color: var(--wrong-color);
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            background: var(--secondary-color);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s;
+            margin-top: 1rem;
+        }
+
+        .btn:hover {
+            background: var(--primary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .result-circle {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin: 2rem auto;
+            font-size: 2.5rem;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .result-circle span {
+            font-size: 3.5rem;
+        }
+
+        #result-message {
+            text-align: center;
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+        }
+
+        .share-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .share-btn {
+            background: var(--primary-color);
+            padding: 0.6rem 1.2rem;
+            font-size: 0.9rem;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 1.5rem;
+            background: var(--dark-color);
+            color: white;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        @media (max-width: 768px) {
+            .quiz-container {
+                margin: 1rem;
+                padding: 1.5rem;
+            }
+            
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            
+            #question-text {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
 </head>
-<body onload="dwmrzkkfij()" style="background: #f0f0f0; display: flex; justify-content: center; align-items: center; height: 100vh;">
-<div style="text-align: center;">
-<h1>Carregando conteúdo...</h1>
-</div>
+<body>
+    <header class="header">
+        <h1>Quiz das Mamães da Família Sales</h1>
+        <p>Um desafio especial para celebrar as rainhas da nossa família!</p>
+    </header>
+
+    <main class="quiz-container">
+        <div id="start-screen" class="quiz-screen active">
+            <h2>Bem-vindo ao Quiz Especial!</h2>
+            <p>Este quiz contém 10 perguntas sobre as mamães incríveis da Família Sales. Mostre o quanto você conhece essas mulheres especiais!</p>
+            <button id="start-btn" class="btn">Começar Quiz</button>
+        </div>
+
+        <div id="quiz-screen" class="quiz-screen">
+            <div class="quiz-header">
+                <span class="question-counter">Pergunta 1/10</span>
+                <span class="score">Pontuação: 0</span>
+            </div>
+            <div class="question-container">
+                <h2 id="question-text">Carregando pergunta...</h2>
+                <div id="options-container" class="options-container">
+                    <!-- Opções serão inseridas aqui via JavaScript -->
+                </div>
+            </div>
+            <button id="next-btn" class="btn" disabled>Próxima</button>
+        </div>
+
+        <div id="results-screen" class="quiz-screen">
+            <h2>Resultado Final</h2>
+            <div class="result-circle">
+                <span id="final-score">0</span>/10
+            </div>
+            <p id="result-message">Mensagem personalizada</p>
+            <div class="share-buttons">
+                <button class="btn share-btn" id="share-wa">Compartilhar no WhatsApp</button>
+                <button class="btn share-btn" id="share-fb">Compartilhar no Facebook</button>
+            </div>
+            <button id="restart-btn" class="btn">Fazer Novamente</button>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>© 2024 Quiz das Mamães da Família Sales | Criado com ❤️ para as mamães especiais</p>
+    </footer>
+
+    <script>
+        // Configuração do quiz
+        const questions = [
+            {
+                question: "Qual o nome da matriarca da família Sales?",
+                options: ["Maria", "Ana", "Joana", "Carla"],
+                answer: 0
+            },
+            {
+                question: "Quantos filhos a matriarca da família Sales teve?",
+                options: ["3", "5", "7", "10"],
+                answer: 1
+            },
+            {
+                question: "Qual é o prato especial que a vovó Sales sempre fazia nos domingos?",
+                options: ["Lasanha", "Feijoada", "Bolo de chocolate", "Frango assado"],
+                answer: 3
+            },
+            {
+                question: "Qual era a profissão da primeira mulher da família Sales a se formar na faculdade?",
+                options: ["Médica", "Professora", "Engenheira", "Advogada"],
+                answer: 1
+            },
+            {
+                question: "Qual o nome da tradição familiar criada pelas mamães Sales?",
+                options: ["Noite do pijama", "Almoço de domingo", "Festa das avós", "Dia das receitas"],
+                answer: 0
+            },
+            {
+                question: "Qual desses valores é mais importante para as mamães Sales?",
+                options: ["União familiar", "Sucesso profissional", "Viagens", "Bens materiais"],
+                answer: 0
+            },
+            {
+                question: "Qual era o apelido carinhoso dado às avós da família?",
+                options: ["Vovó doce", "Mamãe grande", "Rainha mãe", "Tia velha"],
+                answer: 2
+            },
+            {
+                question: "Qual era o jogo preferido para brincar com as crianças?",
+                options: ["Bingo", "Dominó", "Uno", "Quebra-cabeça"],
+                answer: 1
+            },
+            {
+                question: "Qual dessas frases era mais dita pelas mamães Sales?",
+                options: ["Família é tudo!", "Dinheiro traz felicidade", "Cada um por si", "A vida é curta demais"],
+                answer: 0
+            },
+            {
+                question: "Qual era o segredo da felicidade segundo as mamães Sales?",
+                options: ["Amor incondicional", "Muito dinheiro", "Viagens constantes", "Trabalhar muito"],
+                answer: 0
+            }
+        ];
+
+        // Variáveis do quiz
+        let currentQuestion = 0;
+        let score = 0;
+        let quizStarted = false;
+
+        // Elementos DOM
+        const startScreen = document.getElementById('start-screen');
+        const quizScreen = document.getElementById('quiz-screen');
+        const resultsScreen = document.getElementById('results-screen');
+        const startBtn = document.getElementById('start-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const restartBtn = document.getElementById('restart-btn');
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const questionCounter = document.querySelector('.question-counter');
+        const scoreElement = document.querySelector('.score');
+        const finalScore = document.getElementById('final-score');
+        const resultMessage = document.getElementById('result-message');
+        const shareWaBtn = document.getElementById('share-wa');
+        const shareFbBtn = document.getElementById('share-fb');
+
+        // Iniciar quiz
+        startBtn.addEventListener('click', startQuiz);
+        nextBtn.addEventListener('click', nextQuestion);
+        restartBtn.addEventListener('click', restartQuiz);
+
+        // Função para iniciar o quiz
+        function startQuiz() {
+            quizStarted = true;
+            startScreen.classList.remove('active');
+            quizScreen.classList.add('active');
+            showQuestion();
+        }
+
+        // Mostrar pergunta atual
+        function showQuestion() {
+            const question = questions[currentQuestion];
+            questionText.textContent = question.question;
+            optionsContainer.innerHTML = '';
+            
+            // Atualizar contador
+            questionCounter.textContent = `Pergunta ${currentQuestion + 1}/${questions.length}`;
+            scoreElement.textContent = `Pontuação: ${score}`;
+            
+            // Criar botões de opção
+            question.options.forEach((option, index) => {
+                const button = document.createElement('button');
+                button.textContent = option;
+                button.classList.add('option-btn');
+                button.addEventListener('click', () => selectAnswer(index));
+                optionsContainer.appendChild(button);
+            });
+            
+            // Desabilitar próximo botão até responder
+            nextBtn.disabled = true;
+        }
+
+        // Selecionar resposta
+        function selectAnswer(index) {
+            const question = questions[currentQuestion];
+            const options = document.querySelectorAll('.option-btn');
+            
+            // Desabilitar todas as opções após seleção
+            options.forEach(option => {
+                option.disabled = true;
+            });
+            
+            // Marcar resposta correta/incorreta
+            if (index === question.answer) {
+                options[index].classList.add('correct');
+                score++;
+                scoreElement.textContent = `Pontuação: ${score}`;
+            } else {
+                options[index].classList.add('wrong');
+                options[question.answer].classList.add('correct');
+            }
+            
+            // Habilitar próximo botão
+            nextBtn.disabled = false;
+        }
+
+        // Próxima pergunta
+        function nextQuestion() {
+            currentQuestion++;
+            
+            if (currentQuestion < questions.length) {
+                showQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        // Mostrar resultados
+        function showResults() {
+            quizScreen.classList.remove('active');
+            resultsScreen.classList.add('active');
+            
+            finalScore.textContent = score;
+            
+            // Mensagem personalizada baseada na pontuação
+            let message;
+            if (score === questions.length) {
+                message = "Incrível! Você conhece as mamães Sales melhor do que ninguém!";
+            } else if (score >= questions.length * 0.7) {
+                message = "Muito bom! Você realmente conhece bem as mamães da família!";
+            } else if (score >= questions.length * 0.4) {
+                message = "Bom trabalho! Mas ainda pode conhecer mais sobre essas mulheres incríveis!";
+            } else {
+                message = "Hmm... parece que você precisa passar mais tempo com as mamães Sales!";
+            }
+            
+            resultMessage.textContent = message;
+            
+            // Configurar compartilhamento
+            const shareText = `Eu fiz ${score} pontos no Quiz das Mamães da Família Sales! Tente bater minha pontuação!`;
+            const shareUrl = window.location.href;
+            
+            shareWaBtn.addEventListener('click', () => {
+                window.open(`https://wa.me/?text=${encodeURIComponent(shareText + ' ' + shareUrl)}`, '_blank');
+            });
+            
+            shareFbBtn.addEventListener('click', () => {
+                window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}&quote=${encodeURIComponent(shareText)}`, '_blank');
+            });
+        }
+
+        // Reiniciar quiz
+        function restartQuiz() {
+            currentQuestion = 0;
+            score = 0;
+            quizStarted = false;
+            
+            resultsScreen.classList.remove('active');
+            startScreen.classList.add('active');
+        }
+    </script>
 </body>
 </html>
